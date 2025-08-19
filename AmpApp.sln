@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp", "AmpApp\AmpApp\AmpApp.csproj", "{473EF03B-C34B-47EC-8014-C32945170725}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp.Client", "AmpApp\AmpApp.Client\AmpApp.Client.csproj", "{958CBCFE-05B5-43C3-BF78-195246329B81}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{473EF03B-C34B-47EC-8014-C32945170725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{473EF03B-C34B-47EC-8014-C32945170725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{473EF03B-C34B-47EC-8014-C32945170725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{473EF03B-C34B-47EC-8014-C32945170725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{958CBCFE-05B5-43C3-BF78-195246329B81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{958CBCFE-05B5-43C3-BF78-195246329B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{958CBCFE-05B5-43C3-BF78-195246329B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{958CBCFE-05B5-43C3-BF78-195246329B81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
