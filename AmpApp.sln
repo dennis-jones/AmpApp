@@ -4,6 +4,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp", "AmpApp\AmpApp\Amp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp.Client", "AmpApp\AmpApp.Client\AmpApp.Client.csproj", "{958CBCFE-05B5-43C3-BF78-195246329B81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp.Shared", "AmpApp.Shared\AmpApp.Shared.csproj", "{FBB0068E-0C52-4EFF-8A2B-C286C54D9AED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zamp.Client", "Zamp.Client\Zamp.Client.csproj", "{CAB8F0E7-6941-4527-9247-43F3996EF40C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zamp.Server", "Zamp.Server\Zamp.Server.csproj", "{C399201F-B569-4282-B052-87FFD615EA2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zamp.Shared", "Zamp.Shared\Zamp.Shared.csproj", "{A45EA1F2-A3DA-4080-ACCD-57B7F9292967}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +26,21 @@ Global
 		{958CBCFE-05B5-43C3-BF78-195246329B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{958CBCFE-05B5-43C3-BF78-195246329B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{958CBCFE-05B5-43C3-BF78-195246329B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB0068E-0C52-4EFF-8A2B-C286C54D9AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB0068E-0C52-4EFF-8A2B-C286C54D9AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB0068E-0C52-4EFF-8A2B-C286C54D9AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB0068E-0C52-4EFF-8A2B-C286C54D9AED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAB8F0E7-6941-4527-9247-43F3996EF40C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAB8F0E7-6941-4527-9247-43F3996EF40C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAB8F0E7-6941-4527-9247-43F3996EF40C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAB8F0E7-6941-4527-9247-43F3996EF40C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C399201F-B569-4282-B052-87FFD615EA2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C399201F-B569-4282-B052-87FFD615EA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C399201F-B569-4282-B052-87FFD615EA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C399201F-B569-4282-B052-87FFD615EA2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45EA1F2-A3DA-4080-ACCD-57B7F9292967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45EA1F2-A3DA-4080-ACCD-57B7F9292967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45EA1F2-A3DA-4080-ACCD-57B7F9292967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45EA1F2-A3DA-4080-ACCD-57B7F9292967}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

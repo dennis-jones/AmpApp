@@ -1,5 +1,6 @@
 ﻿@page "/weather"
 
+@attribute [Authorize(Roles = AppRoles.Guest)]
 <PageTitle>Weather</PageTitle>
 
 <h1>Weather</h1>

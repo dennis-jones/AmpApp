@@ -1,0 +1,46 @@
+﻿@page "/claims"
+@attribute [Authorize]
+
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>User Claims</h3>
+
+@if (_userName is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>Hello, @_userName</p>
+    <ul>
+        @foreach (var claim in _userClaims)
+        {
+            <li>@claim.Type: @claim.Value</li>
+        }
+    </ul>
+}
+
+@code {
+    private string? _userName;
+    private IEnumerable<System.Security.Claims.Claim> _userClaims 
+        = Enumerable.Empty<System.Security.Claims.Claim>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Get the current authentication state
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            _userName = user.Identity.Name;
+            _userClaims = user.Claims;
+        }
+        else
+        {
+            _userName = null;
+            _userClaims = Enumerable.Empty<System.Security.Claims.Claim>();
+        }
+    }
+}

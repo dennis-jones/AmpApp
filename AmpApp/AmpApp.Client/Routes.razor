@@ -1,6 +1,24 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)"/>
-        <FocusOnNavigate RouteData="routeData" Selector="h1"/>
-    </Found>
-</Router>
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="typeof(Program).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
+                <NotAuthorized>
+                    <h1>Access Denied</h1>
+                    <p>You do not have permission to view this page.</p>
+                </NotAuthorized>
+                <Authorizing>
+                    <p>Checking permissions...</p>
+                </Authorizing>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        </Found>
+        @* <NotFound> THIS DOESN'T ACTUALLY WORK; MAYBE NEXT RELEASE OF .NET? *@
+        @*     <LayoutView Layout="typeof(Layout.MainLayout)"> *@
+        @*         <h1>Page not founds</h1> *@
+        @*         <p>The page you requested could not be found.</p> *@
+        @*         <a href="/">Return to Home</a> *@
+        @*     </LayoutView> *@
+        @* </NotFound> *@
+    </Router>
+</CascadingAuthenticationState>
+    

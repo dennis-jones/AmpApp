@@ -4,11 +4,19 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>f769d85d-580a-414c-8f02-c1506306ddf3</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AmpApp.Client\AmpApp.Client.csproj"/>
+        <PackageReference Include="Carter" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="3.13.2" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.8"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\AmpApp.Shared\AmpApp.Shared.csproj" />
+        <ProjectReference Include="..\AmpApp.Client\AmpApp.Client.csproj"/>
+        <ProjectReference Include="..\..\Zamp.Server\Zamp.Server.csproj" />
     </ItemGroup>
 
 </Project>

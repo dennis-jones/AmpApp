@@ -5,3 +5,25 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<p>
+    My roles:
+</p>
+<ul>
+    <AuthorizeView Roles="@AppRoles.Admin">
+        <li>Admin</li>
+    </AuthorizeView>
+    <AuthorizeView Roles="@AppRoles.Supervisor">
+        <li>Supervisor</li>
+    </AuthorizeView>
+    <AuthorizeView Roles="@AppRoles.Editor">
+        <li>Editor</li>
+    </AuthorizeView>
+    <AuthorizeView Roles="@AppRoles.Guest">
+        <li>Guest</li>
+    </AuthorizeView>
+    <AuthorizeView Roles="@AppRoles.HelpAuthor">
+        <li>HelpAuthor</li>
+    </AuthorizeView>
+</ul>
+

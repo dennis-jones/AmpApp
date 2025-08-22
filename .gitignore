@@ -1,5 +1,17 @@
 bin/
 obj/
+AmpApp/bin/
+AmpApp/obj/
+AmpApp.Client/bin/
+AmpApp.Client/obj/
+AmpApp.Shared/bin/
+AmpApp.Shared/obj/
+Zamp.Server/bin/
+Zamp.Server/obj/
+Zamp.Client/bin/
+Zamp.Client/obj/
+Zamp.Shared/bin/
+Zamp.Shared/obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
