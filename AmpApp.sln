@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp", "AmpApp\AmpApp\AmpApp.csproj", "{473EF03B-C34B-47EC-8014-C32945170725}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp", "AmpApp\AmpApp.csproj", "{473EF03B-C34B-47EC-8014-C32945170725}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp.Client", "AmpApp\AmpApp.Client\AmpApp.Client.csproj", "{958CBCFE-05B5-43C3-BF78-195246329B81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp.Client", "AmpApp.Client\AmpApp.Client.csproj", "{958CBCFE-05B5-43C3-BF78-195246329B81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmpApp.Shared", "AmpApp.Shared\AmpApp.Shared.csproj", "{FBB0068E-0C52-4EFF-8A2B-C286C54D9AED}"
 EndProject

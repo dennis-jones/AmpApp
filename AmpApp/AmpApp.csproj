@@ -14,9 +14,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\AmpApp.Shared\AmpApp.Shared.csproj" />
+        <ProjectReference Include="..\AmpApp.Shared\AmpApp.Shared.csproj" />
         <ProjectReference Include="..\AmpApp.Client\AmpApp.Client.csproj"/>
-        <ProjectReference Include="..\..\Zamp.Server\Zamp.Server.csproj" />
+        <ProjectReference Include="..\Zamp.Server\Zamp.Server.csproj" />
     </ItemGroup>
 
 </Project>
