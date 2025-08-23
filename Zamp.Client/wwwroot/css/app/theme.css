@@ -1,0 +1,386 @@
+/* set primary colors for all themes (these are needed always to set the colors of radio buttons in the theme picker) */
+/* More comments here */
+:root {
+    --light1-pri-h: 30;
+    --light1-pri-s: 5%;
+    --light1-pri-l: 37%;
+
+    --light2-pri-h: 220;
+    --light2-pri-s: 20%;
+    --light2-pri-l: 37%;
+
+    --light3-pri-h: 140;
+    --light3-pri-s: 15%;
+    --light3-pri-l: 37%;
+
+    --light4-pri-h: 270;
+    --light4-pri-s: 20%;
+    --light4-pri-l: 37%;
+
+    --light5-pri-h: 334;
+    --light5-pri-s: 39%;
+    --light5-pri-l: 31%;
+
+    --light6-pri-h: 210;
+    --light6-pri-s: 20%;
+    --light6-pri-l: 30%;
+
+    --light7-pri-h: 60;
+    --light7-pri-s: 30%;
+    --light7-pri-l: 20%;
+
+    --light8-pri-h: 270;
+    --light8-pri-s: 20%;
+    --light8-pri-l: 37%;
+
+    --dark1-pri-h: 30;
+    --dark1-pri-s: 5%;
+    --dark1-pri-l: 25%;
+
+    --dark2-pri-h: 220;
+    --dark2-pri-s: 20%;
+    --dark2-pri-l: 30%;
+
+    --dark3-pri-h: 140;
+    --dark3-pri-s: 15%;
+    --dark3-pri-l: 25%;
+
+    --dark4-pri-h: 270;
+    --dark4-pri-s: 29%;
+    --dark4-pri-l: 30%;
+}
+
+:root {
+    /*set color values for light theme (default theme is a light theme)*/
+    --page-l: 98%;
+
+    --text-blackish: hsl(0,0%,0%);
+    --text-blackish-disabled: hsl(0, 0%, 60%);
+
+    --text-whitish: hsl(0,0%,100%);
+    --text-whitish-disabled: hsl(0, 0%, 80%);
+
+    --text: var(--text-blackish);
+    --text-disabled: var(--text-blackish-disabled);
+    --text-danger: hsl(0, 100%, 50%);
+
+    /*primary color values for the default theme (light1)*/
+    --pri-h: var(--light1-pri-h);
+    --pri-s: var(--light1-pri-s);
+    --pri-l: var(--light1-pri-l);
+
+    /*secondary color values are used for controls, border, grid banding (for a unified/ugly look, could make these the same as the primary values)*/
+    --sec-h: 0;
+    --sec-s: 0%;
+    --sec-l: 0%;
+
+    --accent-h: 7;
+    --accent-s: 43%;
+    --accent-l: 44%;
+
+    --link-h: 240;
+    --link-s: 90%;
+    --link-l: 50%;
+
+    --selected-h: 206;
+    --selected-s: 60%;
+    --selected-l: 80%;
+
+    --page-bg: hsl(var(--pri-h), var(--pri-s), var(--page-l));
+
+    --border: hsl(var(--sec-h), var(--sec-s), 40%);
+    --border-subtle: hsl(var(--sec-h), var(--sec-s), 85%);
+
+    --link-text: hsl(var(--link-h), var(--link-s), var(--link-l));
+    --link-text-hover: hsl(var(--link-h), var(--link-s), calc(var(--link-l) + 15%));
+
+    --btn-text: var(--text);
+    --btn-bg: linear-gradient(hsl(var(--sec-h), var(--sec-s), 100%), hsl(var(--sec-h), var(--sec-s), 75%));
+    --btn-bg-hover: linear-gradient(hsl(var(--sec-h), var(--sec-s), 96%), hsl(var(--sec-h), var(--sec-s), 70%));
+
+    --nav-bg: hsl(var(--pri-h), var(--pri-s), var(--pri-l));
+    --nav-bg-hover: hsl(var(--pri-h), var(--pri-s), calc(var(--pri-l) + 20%));
+    --nav-bg-active: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+    --nav-text: var(--text-whitish);
+    --nav-text-active: var(--text-whitish);
+    --nav-separator: var(--text-whitish-disabled);
+
+    --alert-danger-bg: hsl(0, 50%, 40%);
+    --alert-danger-text: var(--text-whitish);
+    
+    --info-banner-bg: hsl(60, 80%, 70%);
+
+    --flag: hsl(0, 100%, 50%);
+    --bg-danger: hsl(0, 100%, 90%);
+
+    --grid-toolbar-text: var(--text-whitish);
+    --grid-toolbar-button-border: hsla(0,0%,100%,20%);
+    --grid-toolbar-text-disabled: var(--text-whitish-disabled);
+    --grid-toolbar-bg: hsl(var(--pri-h), var(--pri-s), calc(var(--pri-l) + 15%));
+    --grid-toolbar-bg-hover: hsl(var(--pri-h), var(--pri-s), calc(var(--pri-l) + 30%));
+    --grid-header-text: var(--text);
+    --grid-header-bg: transparent;
+    --grid-body-text-deemphasize: var(--text-blackish-disabled);
+    --bg-warning: hsl(60, 100%, 90%);
+    --grid-body-bg-danger: hsl(0, 100%, 90%);
+    --grid-body-bg-highlight: hsl(var(--sec-h), var(--sec-s), 93%);
+    --grid-body-bg-hover: hsl(var(--sec-h), var(--sec-s), 85%);
+    --grid-body-bg-selected: hsl(var(--selected-h), var(--selected-s), var(--selected-l));
+    --grid-footer-text: var(--text);
+    --grid-footer-bg: hsl(var(--sec-h), var(--sec-s), 85%);
+    --grid-criteria-bg: hsl(var(--sec-h), var(--sec-s), 85%);
+
+    --busy-indicator-bg: var(--page-bg);
+    --busy-indicator: var(--text);
+
+    --tab-bg: hsl(var(--sec-h), var(--sec-s), 92%);
+    --tab-bg-hover: hsl(var(--sec-h), var(--sec-s), 85%);
+    --tab-bg-selected: var(--page-bg);
+
+    --upload-text: var(--text-blackish);
+    --upload-bg: hsl(120, 20%, 70%);
+    --upload-drag-bg: hsl(120, 20%, 60%);
+    --upload-in-progress: hsl(var(--sec-h), var(--sec-s), 85%);
+
+    --header1-bg: hsl(var(--sec-h), var(--sec-s), 80%);
+    --header2-bg: hsl(var(--sec-h), var(--sec-s), 90%);
+    --header2-bg-hover: hsl(var(--sec-h), var(--sec-s), 95%);
+
+    --modal-header-bg: var(--nav-bg);
+    --modal-header-link: var(--text-whitish);
+    --modal-bg: hsl(var(--sec-h), var(--sec-s), 93%);
+    --modal-footer-bg: hsl(var(--sec-h), var(--sec-s), 85%);
+
+    --drop-down-bg: hsl(var(--pri-h), var(--pri-s), calc(var(--page-l) - 10%));
+}
+
+:root:has(.dark-theme:checked) {
+    /*this will set the scroll bars to a dark theme*/
+    color-scheme: dark;
+
+    --page-l: 12%;
+    --selected-l: 30%;
+
+    --info-banner-bg: hsl(30, 80%, 20%);
+
+    --flag: hsl(0, 50%, 40%);
+
+    /*--pri-h: var(--dark1-pri-h);*/
+    /*--pri-s: var(--dark1-pri-s);*/
+    /*--pri-l: var(--dark1-pri-l);*/
+
+    --accent-h: 30;
+    --accent-s: 60%;
+    --accent-l: 30%;
+
+    --text-whitish: hsl(0,0%,80%);
+    --text-whitish-disabled: hsl(0, 0%, 50%);
+
+    --text: var(--text-whitish);
+    --text-disabled: var(--text-whitish-disabled);
+    --text-danger: hsl(0, 80%, 50%);
+
+    --border: hsl(var(--pri-h), 0%, 50%);
+    --border-subtle: hsl(var(--pri-h), 0%, 25%);
+
+    --btn-text: var(--text);
+    --btn-bg: linear-gradient(hsl(var(--sec-h), var(--sec-s), 50%), hsl(var(--sec-h), var(--sec-s), 30%));
+    --btn-bg-hover: linear-gradient(hsl(var(--sec-h), var(--sec-s), 45%), hsl(var(--sec-h), var(--sec-s), 25%));
+    --bg-danger: hsl(0, 40%, 40%);
+
+    /*--link-h: 30;*/
+    /*--link-s: 60%;*/
+    /*--link-l: 70%;*/
+    --link-h: 200; /* 50 */
+    --link-s: 50%; /* 50% */
+    --link-l: 60%; /* 50% */
+    --link-l-hover: 30%;
+    --grid-toolbar-bg: var(--nav-bg);
+    --grid-toolbar-bg-hover: var(--nav-bg-hover);
+    --grid-body-text-deemphasize: var(--text-blackish-disabled);
+    --bg-warning: hsl(60, 60%, 30%);
+    --grid-body-bg-danger: hsl(0, 40%, 40%);
+    --grid-body-bg-highlight: hsl(var(--sec-h), var(--sec-s), 25%);
+    --grid-body-bg-hover: hsl(var(--sec-h), var(--sec-s), 30%);
+    --grid-footer-bg: hsl(var(--sec-h), var(--sec-s), 20%);
+    --grid-criteria-bg: hsl(var(--sec-h), var(--sec-s), 20%);
+
+    --tab-bg: hsl(var(--sec-h), var(--sec-s), 30%);
+    --tab-bg-hover: hsl(var(--sec-h), var(--sec-s), 40%);
+    --tab-bg-selected: var(--page-bg);
+
+    --upload-text: var(--text-whitish);
+    /*--upload-bg: hsl(120, 20%, 25%);*/
+    /*--upload-drag-bg: hsl(120, 20%, 30%);*/
+    --upload-bg: hsl(50, 30%, 30%);
+    --upload-drag-bg: hsl(50, 30%, 25%);
+    --upload-in-progress: hsl(var(--sec-h), var(--sec-s), 30%);
+
+    --header1-bg: hsl(var(--sec-h), var(--sec-s), 20%);
+    --header2-bg: hsl(var(--sec-h), var(--sec-s), 30%);
+    --header2-bg-hover: hsl(var(--sec-h), var(--sec-s), 40%);
+
+    --modal-header-bg: hsl(var(--sec-h), var(--sec-s), 30%);
+    --modal-header-link: var(--text-whitish);
+    --modal-bg: hsl(var(--sec-h), var(--sec-s), 20%);
+    --modal-footer-bg: hsl(var(--sec-h), var(--sec-s), 30%);
+
+    --drop-down-bg: hsl(var(--pri-h), var(--pri-s), calc(var(--page-l) + 15%));
+}
+
+:root:has(#light-theme2:checked) {
+    --pri-h: var(--light2-pri-h);
+    --pri-s: var(--light2-pri-s);
+    --pri-l: var(--light2-pri-l);
+}
+
+:root:has(#light-theme3:checked) {
+    --pri-h: var(--light3-pri-h);
+    --pri-s: var(--light3-pri-s);
+    --pri-l: var(--light3-pri-l);
+}
+
+:root:has(#light-theme4:checked) {
+    --pri-h: var(--light4-pri-h);
+    --pri-s: var(--light4-pri-s);
+    --pri-l: var(--light4-pri-l);
+}
+
+:root:has(#light-theme5:checked) {
+    --pri-h: var(--light5-pri-h);
+    --pri-s: var(--light5-pri-s);
+    --pri-l: var(--light5-pri-l);
+}
+
+:root:has(#light-theme6:checked) {
+    --pri-h: var(--light6-pri-h);
+    --pri-s: var(--light6-pri-s);
+    --pri-l: var(--light6-pri-l);
+}
+
+:root:has(#light-theme7:checked) {
+    --pri-h: var(--light7-pri-h);
+    --pri-s: var(--light7-pri-s);
+    --pri-l: var(--light7-pri-l);
+}
+
+/* NOTE: This theme is designed to work will with ZoomText */
+:root:has(#light-theme8:checked) {
+    --pri-h: var(--light8-pri-h);
+    --pri-s: var(--light8-pri-s);
+    --pri-l: var(--light8-pri-l);
+    --link-text: hsl(30, 90%, 50%);
+}
+
+:root:has(#dark-theme1:checked) {
+    --pri-h: var(--dark1-pri-h);
+    --pri-s: var(--dark1-pri-s);
+    --pri-l: var(--dark1-pri-l);
+}
+
+:root:has(#dark-theme2:checked) {
+    --pri-h: var(--dark2-pri-h);
+    --pri-s: var(--dark2-pri-s);
+    --pri-l: var(--dark2-pri-l);
+}
+
+:root:has(#dark-theme3:checked) {
+    --pri-h: var(--dark3-pri-h);
+    --pri-s: var(--dark3-pri-s);
+    --pri-l: var(--dark3-pri-l);
+}
+
+:root:has(#dark-theme4:checked) {
+    --pri-h: var(--dark4-pri-h);
+    --pri-s: var(--dark4-pri-s);
+    --pri-l: var(--dark4-pri-l);
+}
+
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.theme-picker > fieldset {
+    border: 0;
+    display: grid;
+    grid-template: auto auto / repeat(4, auto);
+    justify-content: space-between;
+    gap: 12px;
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.theme-picker input[type="radio"] {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    outline: 4px solid var(--radio-color);
+    outline-offset: 1px;
+    border-radius: 50%;
+    border-color: #fff;
+    background-color: #fff;
+
+    &.dark-theme {
+        border-color: #ccc;
+        background-color: #ccc;
+    }
+
+    &:checked {
+        background-color: var(--radio-color);
+    }
+}
+
+.theme-picker input[type="radio"]#light-theme1 {
+    --radio-color: hsl(var(--light1-pri-h), var(--light1-pri-s), var(--light1-pri-l));
+}
+
+.theme-picker input[type="radio"]#light-theme2 {
+    --radio-color: hsl(var(--light2-pri-h), var(--light2-pri-s), var(--light2-pri-l));
+}
+
+.theme-picker input[type="radio"]#light-theme3 {
+    --radio-color: hsl(var(--light3-pri-h), var(--light3-pri-s), var(--light3-pri-l));
+}
+
+.theme-picker input[type="radio"]#light-theme4 {
+    --radio-color: hsl(var(--light4-pri-h), var(--light4-pri-s), var(--light4-pri-l));
+}
+
+.theme-picker input[type="radio"]#light-theme5 {
+    --radio-color: hsl(var(--light5-pri-h), var(--light5-pri-s), var(--light5-pri-l));
+}
+
+.theme-picker input[type="radio"]#light-theme6 {
+    --radio-color: hsl(var(--light6-pri-h), var(--light6-pri-s), var(--light6-pri-l));
+}
+
+.theme-picker input[type="radio"]#light-theme7 {
+    --radio-color: hsl(var(--light7-pri-h), var(--light7-pri-s), var(--light7-pri-l));
+}
+
+.theme-picker input[type="radio"]#light-theme8 {
+    --radio-color: hsl(var(--light8-pri-h), var(--light8-pri-s), var(--light8-pri-l));
+}
+
+.theme-picker input[type="radio"]#dark-theme1 {
+    --radio-color: hsl(var(--dark1-pri-h), var(--dark1-pri-s), var(--dark1-pri-l));
+}
+
+.theme-picker input[type="radio"]#dark-theme2 {
+    --radio-color: hsl(var(--dark2-pri-h), var(--dark2-pri-s), var(--dark2-pri-l));
+}
+
+.theme-picker input[type="radio"]#dark-theme3 {
+    --radio-color: hsl(var(--dark3-pri-h), var(--dark3-pri-s), var(--dark3-pri-l));
+}
+
+.theme-picker input[type="radio"]#dark-theme4 {
+    --radio-color: hsl(var(--dark4-pri-h), var(--dark4-pri-s), var(--dark4-pri-l));
+}

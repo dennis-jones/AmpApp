@@ -1,0 +1,145 @@
+﻿@import "theme.css";
+
+validation-indicator {
+    display: block;
+    color: var(--text-danger);
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+    margin-bottom: -1px;
+    padding-top: 5px;
+}
+
+.text-danger {
+    color: var(--text-danger);
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.pre-wrap {
+    white-space: pre-wrap; /* whitespace is preserved and text will wrap when necessary and on line breaks https://www.w3schools.com/cssref/pr_text_white-space.asp */
+    > * {
+        display: block;
+        white-space: normal;
+    }
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+one-column-grid {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: 6px;
+
+    .center {
+        justify-self: center;
+    }
+}
+
+two-column-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 8px;
+    grid-row-gap: 5px;
+    align-content: start;
+    
+    hr {
+        grid-column: 1 / -1;
+    }
+
+    &>*:nth-child(2n-1) {
+        text-align: right;
+    }
+    
+    &.left-right-align-columns {
+        & > *:nth-child(2n-1) {
+            text-align: left;
+        }
+        & > *:nth-child(2n) {
+            text-align: right;
+        }
+    }
+
+    &.center-align-items {
+        align-items: center;
+    }
+
+    > label-wrapper, > label {
+        white-space: nowrap;
+    }
+
+    > grid-cell > label {
+        margin-left: 10px !important;
+    }
+
+    > span, > a {
+        display: inline;
+        font-weight: bold;
+    }
+}
+
+flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+dropdown-menu {
+    display: grid;
+    flex-direction: column;
+    position: absolute;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    filter: drop-shadow(2px 2px 2px var(--border));
+    width: auto;
+    margin-top: -1px;
+    z-index: 100;
+    
+    &.three-column {
+        grid-template-columns: auto auto auto;
+    }
+    
+    &.set-search-defaults {
+        width: 132px;
+    }
+
+    &.hide {
+        display: none;
+    }
+
+    > dropdown-menu-row {
+        display: contents;
+        
+        &:hover {
+            cursor: pointer;
+            
+            > dropdown-menu-item {
+                background-color: var(--drop-down-bg);
+            }
+        }
+        
+        > dropdown-menu-item {
+            background-color: var(--page-bg);
+            font-weight: normal;
+            padding: 5px;
+            white-space: nowrap;
+            color: var(--text);
+        }
+    }
+    
+    > dropdown-menu-item {
+        background-color: var(--page-bg);
+        cursor: pointer;
+        color: var(--text);
+        padding: 5px 10px;
+        white-space: nowrap;
+
+        &:hover {
+            background-color: var(--drop-down-bg);
+        }
+    }
+}

@@ -1,0 +1,108 @@
+﻿@import "theme.css";
+
+help-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    color: #000;
+    background-color: #fff;
+    min-height: 100%;
+
+    & help-authoring-filter {
+        padding: 5px 10px;
+        background-color: #eef;
+        display: flex;
+        align-items: center;
+
+        & input {
+            margin-left: 15px;
+        }
+
+        & label {
+            margin-left: 5px;
+
+            &::after {
+                content: "";
+            }
+        }
+    }
+
+    & help-title {
+        background-color: #33f;
+        color: #fff;
+        padding: 10px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    & help-page-filter {
+        background-color: #cde;
+        padding: 10px;
+
+        & select {
+            margin-left: 5px;
+        }
+    }
+
+    & help-content {
+        display: block;
+        padding: 10px;
+
+        & help-topic {
+            display: block;
+            border-top: 2px solid black;
+            padding: .5em 0;
+
+            & h1 {
+                font-size: 1.2rem;
+            }
+
+            & h2 {
+                font-size: 1.1rem;
+            }
+
+            & h3 {
+                font-size: 1rem;
+            }
+
+            & help-edit-buttons {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                margin-bottom: 10px;
+                font-size: .7rem;
+
+                & button {
+                    font-weight: normal;
+                    height: 1.9em;
+                }
+
+                & span {
+                    margin-left: auto;
+                }
+            }
+
+            & help-topic-header {
+                display: flex;
+                color: rgb(152, 54, 56);
+                font-weight: bold;
+                width: 100%;
+            }
+
+            & help-topic-text {
+                display: block;
+                margin: 0 0 10px;
+                border-top: 1px solid #ccc;
+                padding-top: .5em;
+            }
+
+            & ul {
+                list-style-type: disc;
+                margin: .25em 0 0 2em;
+            }
+            & ol {
+                margin: .25em 0 0 2em;
+            }
+        }
+    }
+}

@@ -1,0 +1,62 @@
+﻿@import "theme.css";
+
+nav-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+    & .app-name {
+        font-size: larger;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+        padding: 5px;
+        color: var(--nav-text);
+    }
+
+    & a {
+        border-radius: 8px;
+        padding: 5px;
+        width: 100%;
+        color: var(--nav-text);
+
+        &:hover {
+            color: var(--nav-text);
+            background-color: var(--nav-bg-hover);
+        }
+
+        &.active {
+            color: var(--nav-text-active);
+            background-color: var(--nav-bg-active);
+        }
+
+        & alert-count {
+            background-color: var(--nav-bg-active);
+            color: var(--nav-text-active);
+            margin-left: 15px;
+            border: 1px solid var(--nav-text-active);
+            border-radius: 999px;
+            padding: 1px 11px 2px 10px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+    }
+
+    & nav-item {
+        display: flex;
+        align-items: center;
+
+        &:first-of-type {
+            padding-top: 8px;
+        }
+
+        &:last-of-type {
+            padding-bottom: 16px;
+        }
+
+        & hr {
+            width: 100%;
+            margin: 5px;
+            border-color: var(--nav-separator);
+        }
+    }
+}

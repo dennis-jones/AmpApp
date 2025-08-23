@@ -1,0 +1,47 @@
+﻿amp-tabs {
+    display: flex;
+    margin-top: 15px;
+
+    & a {
+        background-color: var(--tab-bg);
+
+        &.app-help {
+            background-color: var(--page-bg);
+            border-color: var(--border);
+            padding: 0;
+            margin: 2px 2px 1px auto;
+
+            > span {
+                background-color: var(--page-bg);
+            }
+        }
+
+        &:not(.app-help) {
+            padding: 2px 10px;
+            margin-right: 3px;
+            color: var(--text);
+            border-style: solid;
+            border-width: 1px 1px 0;
+            border-radius: 8px 8px 0 0;
+            border-color: var(--border);
+
+            &:hover {
+                background-color: var(--tab-bg-hover);
+            }
+
+            &.selected {
+                background-color: var(--tab-bg-selected);
+                border-bottom-color: var(--tab-bg-selected);
+                font-weight: bold;
+                border-bottom-width: 1px;
+                margin-bottom: -1px;
+                z-index: 1;
+
+                &:hover {
+                    background-color: var(--tab-bg-selected);
+                    cursor: default;
+                }
+            }
+        }
+    }
+}

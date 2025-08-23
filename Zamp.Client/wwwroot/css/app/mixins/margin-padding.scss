@@ -1,0 +1,48 @@
+﻿// COMPILE WITH: https://www.cssportal.com/scss-to-css/
+$unit: 'px';
+
+@mixin gen-margin-padding-css($className, $styleName, $styleName2:"") {
+    $max: 20;
+    $offset: 2;
+    $i: 0;
+    @while $i <= $max {
+        #{$className + $i} { 
+            #{$styleName}: #{$i + $unit} !important;
+            @if $styleName2 != "" {
+                #{$styleName2}: #{$i + $unit} !important;
+            }
+        }
+        $i: $i + $offset;
+    }
+
+    $max: 100;
+    $offset: 5;
+    $i: 25;
+    @while $i <= $max {
+        #{$className + $i} { 
+            #{$styleName}: #{$i + $unit} !important;
+            @if $styleName2 != "" {
+                #{$styleName2}: #{$i + $unit} !important;
+            }
+        }
+        $i: $i + $offset;
+    }
+}
+
+// Margins
+@include gen-margin-padding-css('.m-t-', 'margin-top');
+@include gen-margin-padding-css('.m-r-', 'margin-right');
+@include gen-margin-padding-css('.m-b-', 'margin-bottom');
+@include gen-margin-padding-css('.m-l-', 'margin-left');
+@include gen-margin-padding-css('.m-', 'margin');
+@include gen-margin-padding-css('.m-x-', 'margin-left', 'margin-right');
+@include gen-margin-padding-css('.m-y-', 'margin-top', 'margin-bottom');
+
+// Paddings
+@include gen-margin-padding-css('.p-t-', 'padding-top');
+@include gen-margin-padding-css('.p-r-', 'padding-right');
+@include gen-margin-padding-css('.p-b-', 'padding-bottom');
+@include gen-margin-padding-css('.p-l-', 'padding-left');
+@include gen-margin-padding-css('.p-', 'padding');
+@include gen-margin-padding-css('.p-x-', 'padding-left', 'padding-right');
+@include gen-margin-padding-css('.p-y-', 'padding-top', 'padding-bottom');

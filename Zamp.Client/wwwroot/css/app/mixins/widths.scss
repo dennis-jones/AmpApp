@@ -1,0 +1,42 @@
+﻿// COMPILE WITH: https://www.cssportal.com/scss-to-css/
+$unit: 'px';
+
+@mixin gen-widths-css($className) {
+    $max: 100;
+    $offset: 5;
+    $i: 0;
+    @while $i <= $max {
+        #{$className + $i} {
+            width: #{$i + $unit} !important;
+            min-width: #{$i + $unit} !important;
+            max-width: #{$i + $unit} !important;
+        }
+        $i: $i + $offset;
+    }
+    
+    $max: 400;
+    $offset: 10;
+    $i: 110;
+    @while $i <= $max {
+        #{$className + $i} {
+            width: #{$i + $unit} !important;
+            min-width: #{$i + $unit} !important;
+            max-width: #{$i + $unit} !important;
+        }
+        $i: $i + $offset;
+    }
+    
+    $max: 1400;
+    $offset: 50;
+    $i: 450;
+    @while $i <= $max {
+        #{$className + $i} {
+            width: #{$i + $unit} !important;
+            min-width: #{$i + $unit} !important;
+            max-width: #{$i + $unit} !important;
+        }
+        $i: $i + $offset;
+    }
+}
+
+@include gen-widths-css('.w-');

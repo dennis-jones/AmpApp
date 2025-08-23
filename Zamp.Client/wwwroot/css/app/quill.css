@@ -1,0 +1,87 @@
+@import "theme.css";
+
+#html-editor {
+    height: auto;
+
+    * {
+        height: auto;
+    }
+}
+
+#QuillToolBar {
+    padding: 0 2px;
+    background-color: #999;
+    border-color: var(--border);
+
+    & .ql-header.ql-picker, & .ql-formats {
+        margin-right: 10px;
+        padding-right: 10px;
+    }
+
+    & .ql-color > .ql-picker-options > span {
+        height: 15px;
+        border: 1px solid black;
+    }
+
+    & .ql-picker.ql-header, & .ql-snow & .ql-editor h1 {
+        .ql-picker-item[data-value="1"]::before {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        & .ql-picker-item[data-value="2"]::before {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        & .ql-picker-item[data-value="3"]::before {
+            font-size: 1.0em;
+            font-weight: bold;
+        }
+    }
+}
+
+#QuillEditor {
+    padding: 0;
+    border-color: var(--border);
+    color: var(--text);
+    background-color: var(--page-bg);
+
+    & .ql-editor {
+        padding: 4px;
+        height: 250px;
+
+        & h1 {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        & h2 {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        & h3 {
+            font-size: 1.0em;
+            font-weight: bold;
+        }
+        
+        ul {
+            margin-left: 0;
+            padding-left: 0;
+
+            li {
+                margin-left: 0;
+            }
+        }
+        
+        ol {
+            margin-left: 4px;
+            padding-left: 0;
+
+            li {
+                margin-left: 0;
+            }
+        }
+    }
+}

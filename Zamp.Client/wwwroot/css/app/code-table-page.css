@@ -1,0 +1,36 @@
+﻿@import "theme.css";
+
+code-tables-page {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: 0;
+    overflow-y: hidden;
+    height: 100%;
+
+    & code-tables-content {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+        height: 100%;
+        column-gap: 10px;
+        overflow-y: hidden;
+
+        & select {
+            padding: 2px 5px;
+            height: 100%;
+            width: 240px;
+            overflow-y: auto;
+            grid-row: span 2;
+
+            & option {
+                padding: 2px;
+                color: var(--text);
+
+                &:checked {
+                    background-color: var(--grid-body-bg-selected);
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

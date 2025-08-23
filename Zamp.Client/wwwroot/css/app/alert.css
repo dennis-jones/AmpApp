@@ -1,0 +1,64 @@
+﻿@import "theme.css";
+
+modal-banner {
+    display: block;
+    text-align: center; 
+    background-color: var(--bg-warning); 
+    font-weight: bold; 
+    padding: 10px 0;
+}
+
+modal-alert {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 15px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    margin: 0;
+
+    &.alert-danger {
+        background-color: var(--alert-danger-bg);
+        color: var(--alert-danger-text);
+
+        & a.close {
+            color: var(--alert-danger-text);
+        }
+    }
+
+    &.alert-warning {
+        background-color: var(--bg-warning);
+        color: var(--text);
+
+        & a.close {
+            color: var(--text);
+        }
+    }
+    
+    & a.close {
+        float: right;
+    }
+
+    & modal-alert-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        & alert-heading {
+            font-weight: bold;
+        }
+        
+        & ul {
+            margin-top: 2px;
+            max-height: 100px;
+            overflow-y: auto;
+            
+            & li {
+                margin-left: 32px;
+            }
+        }
+
+        & alert-hint {
+            font-style: italic;
+        }
+    }
+}
