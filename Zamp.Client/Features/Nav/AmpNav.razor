@@ -1,30 +1,16 @@
-﻿@using AmpApp.Client.Features
-@using Blazored.LocalStorage
-
+﻿@using Blazored.LocalStorage
 @inject ILocalStorageService LocalStorageService
-@inject LoggedInUserService LoggedInUserService
 
 <nav-container>
-    <div class="app-name">Amp.Case</div>
-
-    <AmpAppNavItem/>
-    <AmpAppNavItem Href="uc/Case Search" Text="Case Search" Match="NavLinkMatch.All"/>
-    <AmpAppNavItem Href="todo/search" Text="To Do" Match="NavLinkMatch.All"/>
-    
-    @if (LoggedInUserService.User.IsAdmin)
-    {
-        <AmpAppNavItem/>
-        <AmpAppNavItem Href="uc/Code Tables" Text="Code Tables" Match="NavLinkMatch.All"/>
-    }
-
-    <AmpAppNavItem/>
-    <AmpAppNavItem Href="uc/About" Text="About" Match="NavLinkMatch.All"/>
-
-    <div style="margin: auto auto 10px; padding-bottom: 0; color: var(--nav-separator)">
-        @LoggedInUserService.User.Name
+    <div class="app-name">
+        @AppName
     </div>
 
-    <AmpAppNavItem Text=@(ShowThemePicker ? "Hide Theme Picker" : "Show Theme Picker")
+    <AmpNavItem/>
+    
+    @NavItemsContent
+
+    <AmpNavItem Text=@(ShowThemePicker ? "Hide Theme Picker" : "Show Theme Picker")
                    OnClick="@(() => ShowThemePicker = !ShowThemePicker)"/>
     <form class="theme-picker" action="" style=@(ShowThemePicker ? "" : "display: none")>
         <fieldset>
@@ -95,13 +81,14 @@
 
 @code {
 
-    // [CascadingParameter] IModalService ModalService { get; set; } = default!;
-
     private const string ThemeKey = "theme";
     private const string DefaultTheme = "light-theme1";
 
+    [Parameter] public string AppName { private get; set; } = "Amp App";
+    [Parameter] public RenderFragment? NavItemsContent { private get; set; }
+
     private readonly string[] _validThemes =
-    {
+    [
         "light-theme1",
         "light-theme2",
         "light-theme3",
@@ -114,7 +101,7 @@
         "dark-theme2",
         "dark-theme3",
         "dark-theme4"
-    };
+    ];
 
     private bool ShowThemePicker { get; set; } = false;
     private string _currentTheme = DefaultTheme;
@@ -134,17 +121,4 @@
         _currentTheme = theme;
         await LocalStorageService.SetItemAsStringAsync(ThemeKey, _currentTheme);
     }
-
-    public void Dispose()
-    {
-        // LoggedInUserService.OnCurrentUserReminderCountChange -= StateHasChanged;
-    }
-
-    // private int GetAlertCount()
-    // {
-    //        return LoggedInUserService.CurrentUserReminderCount.ComingDueCount +
-    //               LoggedInUserService.CurrentUserReminderCount.DueCount +
-    //               LoggedInUserService.CurrentUserReminderCount.OverdueCount;
-    // }
-
 }

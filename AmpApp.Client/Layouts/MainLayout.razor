@@ -1,5 +1,5 @@
 ﻿@using AmpApp.Client.Features
-@using AmpApp.Client.Shared.Nav
+@using AmpApp.Client.Shared
 
 @inherits LayoutComponentBase
 @inject LoggedInUserService UserService
@@ -7,7 +7,7 @@
 <page-wrapper>
     <page-header></page-header>
     <page-nav>
-        <AmpAppNav/>
+        <Nav></Nav>
     </page-nav>
     <right-pane>
         <page-container>

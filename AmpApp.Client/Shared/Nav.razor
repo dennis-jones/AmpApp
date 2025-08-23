@@ -1,0 +1,24 @@
+﻿@using AmpApp.Client.Features
+@using Zamp.Client.Features.Nav
+
+@inject LoggedInUserService LoggedInUserService
+
+<AmpNav AppName="Amp.Case">
+    <NavItemsContent>
+        <AmpNavItem Href="uc/Case Search" Text="Case Search" Match="NavLinkMatch.All"/>
+        <AmpNavItem Href="todo/search" Text="To Do" Match="NavLinkMatch.All"/>
+
+        @if (LoggedInUserService.User.IsAdmin)
+        {
+            <AmpNavItem/>
+            <AmpNavItem Href="uc/Code Tables" Text="Code Tables" Match="NavLinkMatch.All"/>
+        }
+
+        <AmpNavItem/>
+        <AmpNavItem Href="uc/About" Text="About" Match="NavLinkMatch.All"/>
+
+        <div style="margin: auto auto 10px; padding-bottom: 0; color: var(--nav-separator)">
+            @LoggedInUserService.User.Name
+        </div>
+    </NavItemsContent>
+</AmpNav>
