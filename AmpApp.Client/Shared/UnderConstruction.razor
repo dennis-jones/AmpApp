@@ -1,0 +1,11 @@
+﻿@page "/uc"
+@page "/uc/{pagename}"
+
+<AmpPageTitle Title="@PageName" />
+
+<p>This page is under construction.</p>
+
+@code {
+    [Parameter] public string PageName { get; set; } = "Under Construction";
+    [Parameter] public int? Id { get; set; }
+}

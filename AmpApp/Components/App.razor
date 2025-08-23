@@ -2,19 +2,42 @@
 <html lang="en">
 
 <head>
+    <title>Amp.Case</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <base href="/"/>
-    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]"/>
-    <link rel="stylesheet" href="@Assets["app.css"]"/>
-    <link rel="stylesheet" href="@Assets["AmpApp.styles.css"]"/>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/theme.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/base.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/blazor.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/mixins/margin-padding.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/mixins/heights.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/mixins/widths.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/main-layout.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/help-layout.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/busy-indicator.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/amp-nav.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/amp-grid.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/search-page.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/view-page.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/amp-tabs.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/file-upload.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/report.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/app-specific.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/modal.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/alert.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/code-table-page.css"]'/>
+    <link rel="stylesheet" href='@Assets["_content/Zamp.Client/css/app/quill.css"]'/>
+
     <ImportMap/>
-    <link rel="icon" type="image/png" href="favicon.png"/>
+    <link rel="icon" type="image/ico" href="favicon.ico"/>
     <HeadOutlet @rendermode="InteractiveWebAssembly"/>
 </head>
 
 <body>
-<Routes @rendermode="InteractiveWebAssembly"/>
+<Routes @rendermode="new InteractiveWebAssemblyRenderMode(prerender: false)"/>
 <script src="_framework/blazor.web.js"></script>
 </body>
 

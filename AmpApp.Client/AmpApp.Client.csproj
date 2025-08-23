@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.7" />
     </ItemGroup>
@@ -17,6 +18,22 @@
     <ItemGroup>
       <ProjectReference Include="..\AmpApp.Shared\AmpApp.Shared.csproj" />
       <ProjectReference Include="..\Zamp.Client\Zamp.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Layout\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="Layout\NavMenu.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Claims.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Counter.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Weather.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Shared\Pages\Claims.razor" />
+      <AdditionalFiles Include="Shared\Pages\Counter.razor" />
+      <AdditionalFiles Include="Shared\Pages\Home.razor" />
+      <AdditionalFiles Include="Shared\Pages\Weather.razor" />
     </ItemGroup>
 
 </Project>

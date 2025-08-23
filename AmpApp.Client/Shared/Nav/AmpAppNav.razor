@@ -1,0 +1,150 @@
+﻿@using AmpApp.Client.Features
+@using Blazored.LocalStorage
+
+@inject ILocalStorageService LocalStorageService
+@inject LoggedInUserService LoggedInUserService
+
+<nav-container>
+    <div class="app-name">Amp.Case</div>
+
+    <AmpAppNavItem/>
+    <AmpAppNavItem Href="uc/Case Search" Text="Case Search" Match="NavLinkMatch.All"/>
+    <AmpAppNavItem Href="todo/search" Text="To Do" Match="NavLinkMatch.All"/>
+    
+    @if (LoggedInUserService.User.IsAdmin)
+    {
+        <AmpAppNavItem/>
+        <AmpAppNavItem Href="uc/Code Tables" Text="Code Tables" Match="NavLinkMatch.All"/>
+    }
+
+    <AmpAppNavItem/>
+    <AmpAppNavItem Href="uc/About" Text="About" Match="NavLinkMatch.All"/>
+
+    <div style="margin: auto auto 10px; padding-bottom: 0; color: var(--nav-separator)">
+        @LoggedInUserService.User.Name
+    </div>
+
+    <AmpAppNavItem Text=@(ShowThemePicker ? "Hide Theme Picker" : "Show Theme Picker")
+                   OnClick="@(() => ShowThemePicker = !ShowThemePicker)"/>
+    <form class="theme-picker" action="" style=@(ShowThemePicker ? "" : "display: none")>
+        <fieldset>
+            <legend class="visually-hidden">Pick a colour scheme</legend>
+
+            <label for="light-theme1" class="visually-hidden">Light theme 1</label>
+            <input id="light-theme1" type="radio" name="theme"
+                   checked="@(_currentTheme == "light-theme1")"
+                   @onclick="@(() => SetTheme("light-theme1"))">
+
+            <label for="light-theme2" class="visually-hidden">Light theme 2</label>
+            <input id="light-theme2" type="radio" name="theme"
+                   checked="@(_currentTheme == "light-theme2")"
+                   @onclick="@(() => SetTheme("light-theme2"))">
+
+            <label for="light-theme3" class="visually-hidden">Light theme 3</label>
+            <input id="light-theme3" type="radio" name="theme"
+                   checked="@(_currentTheme == "light-theme3")"
+                   @onclick="@(() => SetTheme("light-theme3"))">
+
+            <label for="light-theme4" class="visually-hidden">Light theme 4</label>
+            <input id="light-theme4" type="radio" name="theme"
+                   checked="@(_currentTheme == "light-theme4")"
+                   @onclick="@(() => SetTheme("light-theme4"))">
+
+            <label for="light-theme5" class="visually-hidden">Alt theme 1</label>
+            <input id="light-theme5" type="radio" name="theme"
+                   checked="@(_currentTheme == "light-theme5")"
+                   @onclick="@(() => SetTheme("light-theme5"))">
+
+            <label for="light-theme6" class="visually-hidden">Alt theme 2</label>
+            <input id="light-theme6" type="radio" name="theme"
+                   checked="@(_currentTheme == "light-theme6")"
+                   @onclick="@(() => SetTheme("light-theme6"))">
+
+            <label for="light-theme7" class="visually-hidden">Alt theme 3</label>
+            <input id="light-theme7" type="radio" name="theme"
+                   checked="@(_currentTheme == "light-theme7")"
+                   @onclick="@(() => SetTheme("light-theme7"))">
+
+            <label for="light-theme8" class="visually-hidden">Alt theme 4</label>
+            <input id="light-theme8" type="radio" name="theme"
+                   checked="@(_currentTheme == "light-theme8")"
+                   @onclick="@(() => SetTheme("light-theme8"))">
+
+            <label for="dark-theme1" class="visually-hidden">Dark theme 1</label>
+            <input id="dark-theme1" class="dark-theme" type="radio" name="theme"
+                   checked="@(_currentTheme == "dark-theme1")"
+                   @onclick="@(() => SetTheme("dark-theme1"))">
+
+            <label for="dark-theme2" class="visually-hidden">Dark theme 2</label>
+            <input id="dark-theme2" class="dark-theme" type="radio" name="theme"
+                   checked="@(_currentTheme == "dark-theme2")"
+                   @onclick="@(() => SetTheme("dark-theme2"))">
+
+            <label for="dark-theme3" class="visually-hidden">Dark theme 3</label>
+            <input id="dark-theme3" class="dark-theme" type="radio" name="theme"
+                   checked="@(_currentTheme == "dark-theme3")"
+                   @onclick="@(() => SetTheme("dark-theme3"))">
+
+            <label for="dark-theme4" class="visually-hidden">Dark theme 4</label>
+            <input id="dark-theme4" class="dark-theme" type="radio" name="theme"
+                   checked="@(_currentTheme == "dark-theme4")"
+                   @onclick="@(() => SetTheme("dark-theme4"))">
+        </fieldset>
+    </form>
+</nav-container>
+
+@code {
+
+    // [CascadingParameter] IModalService ModalService { get; set; } = default!;
+
+    private const string ThemeKey = "theme";
+    private const string DefaultTheme = "light-theme1";
+
+    private readonly string[] _validThemes =
+    {
+        "light-theme1",
+        "light-theme2",
+        "light-theme3",
+        "light-theme4",
+        "light-theme5",
+        "light-theme6",
+        "light-theme7",
+        "light-theme8",
+        "dark-theme1",
+        "dark-theme2",
+        "dark-theme3",
+        "dark-theme4"
+    };
+
+    private bool ShowThemePicker { get; set; } = false;
+    private string _currentTheme = DefaultTheme;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string t = await LocalStorageService.GetItemAsStringAsync(ThemeKey) ?? string.Empty;
+        if (_validThemes.Contains(t))
+            _currentTheme = t;
+
+        // LoggedInUserService.OnCurrentUserReminderCountChange += StateHasChanged;
+        await base.OnInitializedAsync();
+    }
+
+    private async Task SetTheme(string theme)
+    {
+        _currentTheme = theme;
+        await LocalStorageService.SetItemAsStringAsync(ThemeKey, _currentTheme);
+    }
+
+    public void Dispose()
+    {
+        // LoggedInUserService.OnCurrentUserReminderCountChange -= StateHasChanged;
+    }
+
+    // private int GetAlertCount()
+    // {
+    //        return LoggedInUserService.CurrentUserReminderCount.ComingDueCount +
+    //               LoggedInUserService.CurrentUserReminderCount.DueCount +
+    //               LoggedInUserService.CurrentUserReminderCount.OverdueCount;
+    // }
+
+}

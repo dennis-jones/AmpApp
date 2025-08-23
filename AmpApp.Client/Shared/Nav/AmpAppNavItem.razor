@@ -1,0 +1,43 @@
+﻿<nav-item @attributes="@AdditionalAttributes">
+	@if (Text is null)
+	{
+		<hr />
+	}
+	else if (OnClick.HasDelegate)
+	{
+		<NavLink Match="@NavLinkMatch.All" @onclick="@HandleNavLinkClicked">
+			@Text
+			@if (AlertCount > 0)
+			{
+				<alert-count>@AlertCount</alert-count>
+			}
+		</NavLink>
+	}
+	else if (Href is not null)
+	{
+		<NavLink Match="@Match" href="@Href" class="nav-link">
+			@Text
+			@if (AlertCount > 0)
+			{
+				<alert-count>@AlertCount</alert-count>
+			}
+		</NavLink>
+	}
+</nav-item>
+
+@code {
+	[Parameter] public string? Href { get; set; }
+	[Parameter] public string? Text { get; set; }
+	[Parameter] public int AlertCount { get; set; }
+	[Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+
+	[Parameter] public EventCallback OnClick { get; set; }
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = new();
+
+	private async Task HandleNavLinkClicked()
+	{
+		await OnClick.InvokeAsync();
+	}
+}
