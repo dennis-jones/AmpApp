@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime JsRuntime
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JsRuntime
 
 <page-title>
     <h1>
@@ -8,12 +9,12 @@
             <i class="fa-solid fa-flag" title="@Flag"></i>
         }
     </h1>
-    <AmpHelpButton Show="@ShowHelp" HelpStateNameOverride="@HelpStateNameOverride"/>
+    @* <AmpHelpButton Show="@ShowHelp" HelpStateNameOverride="@HelpStateNameOverride"/> *@
 </page-title>
 
 @code {
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? HelpStateNameOverride { get; set; }
     [Parameter] public bool ShowHelp { get; set; } = true;
-    [Parameter] public string? Flag { get; set; } = null;
+    [Parameter] public string? Flag { get; set; }
 }
