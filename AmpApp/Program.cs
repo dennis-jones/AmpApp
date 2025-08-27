@@ -1,11 +1,13 @@
+using System.Globalization;
 using AmpApp.Components;
 using AmpApp.Shared.Models;
 using Carter;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
+using Zamp.Server.Infrastructure.Middleware;
+using Zamp.Shared.Infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddCarter();
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
@@ -31,6 +33,23 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents()
     .AddAuthenticationStateSerialization(options => options.SerializeAllClaims = true);
 
+// Register Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<IDbConnectionFactory, NpgsqlConnectionFactory>();
+
+builder.Services.AddCarter();
+
+// Registers all FluentValidation validators from the Shared assembly.
+builder.Services.AddValidatorsFromAssemblyContaining<AmpApp.Shared.AssemblyMarker>();
+ValidatorOptions.Global.LanguageManager = new FluentValidationLanguageManager();
+ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("en"); // this line must be after setting the LanguageManager
+
+builder.Services.AddHttpContextAccessor();
+// builder.Services.AddScoped<UserContext>();
+builder.Services.AddInjectables(typeof(Program).Assembly);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,7 +66,15 @@ else
 
 app.UseHttpsRedirection();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.UseAntiforgery();
+
+app.UseMiddleware<ApiAuthorizationErrorMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -58,4 +85,5 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(AmpApp.Client._Imports).Assembly);
 
 app.MapCarter();
+
 app.Run();

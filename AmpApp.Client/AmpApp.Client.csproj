@@ -27,13 +27,10 @@
       <_ContentIncludedByDefault Remove="Pages\Counter.razor" />
       <_ContentIncludedByDefault Remove="Pages\Home.razor" />
       <_ContentIncludedByDefault Remove="Pages\Weather.razor" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Shared\Pages\Claims.razor" />
-      <AdditionalFiles Include="Shared\Pages\Counter.razor" />
-      <AdditionalFiles Include="Shared\Pages\Home.razor" />
-      <AdditionalFiles Include="Shared\Pages\Weather.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Test\Claims.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Test\Counter.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Test\Home.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Test\Weather.razor" />
     </ItemGroup>
 
 </Project>

@@ -11,4 +11,6 @@ builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddInjectables(typeof(Program).Assembly);
 
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
 await builder.Build().RunAsync();

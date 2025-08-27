@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
-using Zamp.Extensions;
+using Zamp.Shared.Extensions;
 
 namespace Zamp.Client.Features.LoggedInUser;
 

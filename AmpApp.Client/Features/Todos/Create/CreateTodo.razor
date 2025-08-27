@@ -1,0 +1,74 @@
+﻿@page "/create-todo"
+@using AmpApp.Shared.Models.Todo
+@inject TodoStateService TodoState
+
+<h3>Create Todo</h3>
+
+<input @bind="_title" placeholder="Title"/>
+<br/>
+<input @bind="_description" placeholder="Description"/>
+<br/>
+<button @onclick="CreateTodoAsync">Create</button>
+
+@if (_successMessage != null)
+{
+    <div style="color: green;">@_successMessage</div>
+}
+@if (_errorMessage != null)
+{
+    <div style="color: red;">@_errorMessage</div>
+}
+
+<h4>Your Todos</h4>
+@if (TodoState.Todos.Count == 0)
+{
+    <p>No todos yet.</p>
+}
+else
+{
+    <ul>
+        @foreach (var todo in TodoState.Todos)
+        {
+            <li>@todo.Title: @todo.Description (@(todo.IsCompleted ? "Done" : "Not Done"))</li>
+        }
+    </ul>
+}
+
+@code {
+    private string _title = string.Empty;
+    private string? _description;
+    private string? _successMessage;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("OnInitializedAsync called!");
+        await TodoState.RefreshTodosAsync();
+    }
+
+    private async Task CreateTodoAsync()
+    {
+        _successMessage = null;
+        _errorMessage = null;
+
+        var dto = new CreateTodoDto
+        {
+            Title = _title,
+            Description = _description
+        };
+
+        var success = await TodoState.AddTodoAsync(dto);
+
+        if (success)
+        {
+            _successMessage = "Todo created!";
+            _title = string.Empty;
+            _description = null;
+        }
+        else
+        {
+            _errorMessage = "Failed to create todo.";
+        }
+    }
+
+}

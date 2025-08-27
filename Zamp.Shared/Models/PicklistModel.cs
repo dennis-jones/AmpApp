@@ -1,4 +1,4 @@
-﻿namespace Zamp.Models;
+﻿namespace Zamp.Shared.Models;
 
 public partial class PicklistModel
 {

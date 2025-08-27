@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using Zamp.Models;
+using Zamp.Shared.Models;
 
-namespace Zamp.Extensions;
+namespace Zamp.Shared.Extensions;
 
 public static class StringExtensions
 {
@@ -95,10 +95,14 @@ public static class StringExtensions
             throw new InvalidDataException($"Text not found: {startingText}...{endingText}");
         return Regex.Replace(source, regexPattern, replacementText);
     }
-
-    public static string ExtractNameFromEmail(this string email)
+    
+    public static string? ExtractNameFromEmail(this string? email)
     {
-        return email.Split('@')[0].Replace("'", "");
+        if (string.IsNullOrWhiteSpace(email))
+            return null;
+
+        var atIndex = email.IndexOf('@');
+        return atIndex <= 0 ? null : email[..atIndex];
     }
 
     public static string FormatSql(this string sql, bool setUserNameSessionContext = true)

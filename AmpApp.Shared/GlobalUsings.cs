@@ -1,0 +1,1 @@
+﻿global using Zamp.Shared.Models.Criteria;

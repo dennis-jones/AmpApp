@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 
-namespace Zamp.Extensions;
+namespace Zamp.Shared.Extensions;
 
 public static class GenericExtensions
 {

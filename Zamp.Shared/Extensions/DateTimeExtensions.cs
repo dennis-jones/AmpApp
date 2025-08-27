@@ -1,4 +1,4 @@
-﻿namespace Zamp.Extensions;
+﻿namespace Zamp.Shared.Extensions;
 
 public static class DateTimeExtensions
 {
