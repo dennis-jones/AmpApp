@@ -16,8 +16,8 @@ public class Endpoints : CarterModule
                 http.Response.Headers.Location = location;
                 return Results.Created(location, result);
             })
-            .AddEndpointFilter<ValidationFilter<CreateTodoDto>>()
-            .RequireAuthorization(AppPolicies.EditorOrHigher);
+            .RequireAuthorization(AppPolicies.EditorOrHigher)
+            .AddEndpointFilter<ValidationFilter<CreateTodoDto>>();
 
         app.MapPut("/api/todo/{id:guid}", async (Guid id, TodoDto dto, UpdateService service) =>
             {

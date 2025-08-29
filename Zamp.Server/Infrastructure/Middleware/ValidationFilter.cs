@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Core.Serialization;
+using Microsoft.AspNetCore.Http;
+using Zamp.Server.Infrastructure;
+using Zamp.Shared.Models;
 
 namespace Zamp.Server.Infrastructure.Middleware;
 
@@ -12,11 +15,8 @@ public class ValidationFilter<T>(IValidator<T> validator) : IEndpointFilter
         var result = await validator.ValidateAsync(dto);
         if (result.IsValid) return await next(context);
 
-        var errors = result.Errors.Select(e => new
-        {
-            field = e.PropertyName,
-            message = e.ErrorMessage
-        });
-        return Results.BadRequest(new { errors });
+        throw new ValidationErrorUserFriendlyException(
+            result.Errors.Select(e => new ValidationError(propertyName: e.PropertyName, errorMessage: e.ErrorMessage)).ToList()
+        );
     }
 }
