@@ -1,0 +1,23 @@
+﻿@using Blazored.Modal
+<modal-content class="x900 message-modal">
+    <ModalTitleBar Title="@Title"></ModalTitleBar>
+
+    <modal-body>
+        <textarea disabled>
+            @Message
+        </textarea>
+    </modal-body>
+
+    <modal-footer>
+        <button @onclick="ModalInstance.CloseAsync">Close</button>
+    </modal-footer>
+</modal-content>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+
+    [Parameter] public string Title { get; set; } = "CITAR";
+
+    [Parameter] public string? Message { get; set; }
+
+}

@@ -17,4 +17,8 @@
         <ProjectReference Include="..\Zamp.Shared\Zamp.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Extensions\" />
+    </ItemGroup>
+
 </Project>

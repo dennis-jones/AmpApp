@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Http;
-using Zamp.Server.Extensions;
+using Zamp.Shared.Extensions;
 using Zamp.Shared.Models.Criteria;
 
 namespace Zamp.Server.Infrastructure.Data;
@@ -89,45 +89,32 @@ public class SqlBuilder
         return this;
     }
 
-    public SqlBuilder OrderBy(string column, bool descending = false)
+    public SqlBuilder OrderBy(string propertyName, bool descending = false)
     {
-        _orderBy = $"ORDER BY {column} {(descending ? "DESC" : "ASC")}";
+        _orderBy = $"ORDER BY {propertyName.DatabaseColumnName()} {(descending ? "DESC" : "ASC")}";
         return this;
     }
 
-    public SqlBuilder OrderBy(PaginationModel pag)
+    public SqlBuilder OrderBy(GridCriteriaModel criteria)
     {
-        var orderByList = new List<string>();
-        AddSort(pag.SortPropertyName1, pag.SortAscending1);
-        AddSort(pag.SortPropertyName2, pag.SortAscending2);
-        AddSort(pag.SortPropertyName3, pag.SortAscending3);
-        if (orderByList.Count == 0)
-        {
-            orderByList.Add(DefaultOrderBy);
-        }
-
-        _orderBy = "\nORDER BY " + string.Join(", ", orderByList);
+        _orderBy = criteria.GridSorting.OrderByClause();
         return this;
-
-        // Local function
-        void AddSort(string? propertyName, bool descending)
-        {
-            if (string.IsNullOrWhiteSpace(propertyName)) return;
-
-            if (!PaginationAllowed.PropertyNames.Contains(propertyName))
-                throw new BadHttpRequestException($"Invalid sort by property name: {propertyName}. Note: property names are case sensitive.");
-
-            orderByList.Add($"{propertyName.DatabaseColumnName()} {(descending ? "DESC" : "ASC")}");
-        }
     }
 
-    public SqlBuilder Paginate(PaginationModel criteria)
+    public SqlBuilder Paginate(GridCriteriaModel criteria)
     {
         // Postgres-style pagination; adjust as needed for your DB
         var offset = (criteria.PageNumber - 1) * criteria.PageSize;
         _pagination = "OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
         _parameters["Offset"] = offset;
         _parameters["PageSize"] = criteria.PageSize;
+        return this;
+    }
+    
+    public SqlBuilder WithOrderByAndPagination(GridCriteriaModel criteria)
+    {
+        OrderBy(criteria);
+        Paginate(criteria);
         return this;
     }
 

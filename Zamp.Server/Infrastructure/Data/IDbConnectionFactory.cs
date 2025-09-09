@@ -1,8 +1,9 @@
 ﻿using System.Data;
 
-namespace Zamp.Server.Infrastructure.Data;
-
-public interface IDbConnectionFactory
+namespace Zamp.Server.Infrastructure.Data
 {
-    IDbConnection Create();
+    public interface IDbConnectionFactory
+    {
+        IDbConnection Create();
+    }
 }

@@ -7,6 +7,15 @@ namespace Zamp.Shared.Extensions;
 
 public static class StringExtensions
 {
+    public static bool IsGuid(this string value)
+    {
+        return Guid.TryParse(value, out _);
+    }
+    public static bool IsInteger(this string value)
+    {
+        return int.TryParse(value, out _);
+    }
+
     /// <summary>
     /// Returns the part of the email address before the '@' symbol.
     /// Returns null if input is null, empty, or does not contain '@'.

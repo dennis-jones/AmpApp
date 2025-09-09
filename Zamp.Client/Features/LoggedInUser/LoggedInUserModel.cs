@@ -12,4 +12,5 @@ public class LoggedInUserModel
     public bool IsGuestOrHigher { get; set; }
     public bool IsHelpAuthor { get; set; }
 
+
 }

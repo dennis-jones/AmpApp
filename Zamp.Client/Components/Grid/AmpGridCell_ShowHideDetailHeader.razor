@@ -1,0 +1,45 @@
+﻿@if (ShowCell ?? false)
+{
+    <grid-cell @attributes="@AdditionalAttributes">
+        @Text (
+        <a @onclick:preventDefault="@PreventDefault"
+           @onclick:stopPropagation="@StopPropagation"
+           @onclick="OnClick">
+            @(ShowDetail == true ? "Hide" : "Show")
+        </a>)
+        @if (Hint is not null)
+        {
+            <grid-cell-hint title="@Hint">
+                *
+            </grid-cell-hint>
+        }
+    </grid-cell>
+}
+
+@code {
+
+    [Parameter]
+    public required bool? ShowDetail { get; set; }
+
+    [Parameter]
+    public required string? Text { get; set; }
+
+    [Parameter]
+    public string? Hint { get; set; }
+
+    [Parameter]
+    public required EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public bool? ShowCell { get; set; } = true;
+
+    [Parameter]
+    public bool PreventDefault { get; set; } = true;
+
+    [Parameter]
+    public bool StopPropagation { get; set; } = true;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = new();
+
+}

@@ -9,12 +9,12 @@ public class TodoStateService(HttpClient httpClient) : IScopedInjectable
 
     public async Task RefreshTodosAsync()
     {
-        var result = await httpClient.PostAsJsonAsync("/api/todo/search", new TodoSearchCriteria());
-        if (!result.IsSuccessStatusCode)
-            return;
-        
-        var searchResult = await result.Content.ReadFromJsonAsync<TodoSearchResult>();
-        Todos = searchResult?.Rows ?? [];
+        // var result = await httpClient.PostAsJsonAsync("/api/todo/search", new TodoSearchCriteria());
+        // if (!result.IsSuccessStatusCode)
+        //     return;
+        //
+        // var searchResult = await result.Content.ReadFromJsonAsync<TodoSearchResult>();
+        // Todos = searchResult?.Rows ?? [];
     }
 
     public async Task<bool> AddTodoAsync(CreateTodoDto dto)

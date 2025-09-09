@@ -6,7 +6,7 @@ namespace AmpApp.Features.Todo;
 public class GetByCriteriaRepository(IDbConnectionFactory connectionFactory, ILogger<GetByCriteriaRepository> logger) : IScopedInjectable
 {
     public async Task<(IReadOnlyList<TodoDto> Rows, int TotalCount)> QueryAsync(
-        TodoSearchCriteria criteria,
+        TodoGridCriteriaModel criteria,
         CancellationToken cancellationToken = default)
     {
         try
@@ -17,9 +17,8 @@ public class GetByCriteriaRepository(IDbConnectionFactory connectionFactory, ILo
                 .From("todo")
                 .AddLike(nameof(criteria.Title), criteria.Title)
                 .AddLike(nameof(criteria.Description), criteria.Description)
-                .AddEqual(nameof(criteria.IsCompleted), criteria.IsCompleted)
-                .OrderBy(criteria)
-                .Paginate(criteria);
+                .AddEqual(nameof(criteria.IsComplete), criteria.IsComplete)
+                .WithOrderByAndPagination(criteria);
 
             using var connection = connectionFactory.Create();
             var rows = (await connection.QueryAsync<TodoDto>(builder.RowsSql, builder.Parameters)).ToList();

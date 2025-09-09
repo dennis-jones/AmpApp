@@ -1,0 +1,40 @@
+﻿@using Zamp.Shared.Extensions
+@inject IJSRuntime JsRuntime
+@inject NavigationManager MyNavigationManager
+
+@if (!Show) return;
+
+<a @onclick:preventDefault="true"
+   @onclick:stopPropagation="true"
+   @ondblclick:stopPropagation="true"
+   @onclick="() => JsRuntime.ShowAppHelp(GetHelpState())"
+   class="app-help">
+    <span class="@($"app-help-icon-{IconSize}")" title="@Title"></span>
+</a>
+
+
+@code {
+    [Parameter] public bool Show { get; set; } = true;
+    [Parameter] public string? HelpStateNameOverride { get; set; }
+    [Parameter] public string Title { get; set; } = "Show help for this screen";
+    [Parameter] public int IconSize { get; set; } = 24;
+
+    private string GetHelpState()
+    {
+        if (HelpStateNameOverride is not null)
+            return HelpStateNameOverride;
+
+        var queryString = MyNavigationManager.Uri[MyNavigationManager.BaseUri.Length..];
+        var queryParameters = queryString.Split("/");
+        var helpState = string.Join("-", queryParameters.Where(x => !x.IsGuid() && !x.IsInteger()));
+
+        // special cases can go here
+        return helpState switch
+        {
+            "xxx" or "yyy-" => "xxx-yyy",
+            "aaa" or "bbb" => "aaa-bbb",
+            _ => helpState
+        };
+    }
+}
+

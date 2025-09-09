@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Zamp.Client\Zamp.Client.csproj" />
       <ProjectReference Include="..\Zamp.Shared\Zamp.Shared.csproj" />
     </ItemGroup>
 

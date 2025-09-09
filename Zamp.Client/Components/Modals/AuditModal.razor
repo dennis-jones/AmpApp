@@ -1,0 +1,98 @@
+﻿@using Blazored.Modal
+@using Zamp.Client.Features.LoggedInUser
+@using Zamp.Shared.Extensions
+@typeparam TRecord
+@inject LoggedInUserServiceBase LoggedInUserService
+
+<modal-content class="x300">
+    <ModalTitleBar Title="Audit Information" />
+
+    <modal-body>
+        <two-column-grid>
+            <label>Updates</label>
+            <span>
+                @AuditInfo.RowVersionCount
+            </span>
+
+            <label>Created By</label>
+            <span>
+                @AuditInfo.CreatedBy
+            </span>
+
+            <label>Created Date</label>
+            <span>
+                @if (AuditInfo.CreatedUtcDateTime is not null)
+                {
+                    @AuditInfo.CreatedUtcDateTime.InTimeZone(LoggedInUserService.LocalTimeZoneInfo).FormatDateTime()
+                }
+            </span>
+
+            <label>Updated By</label>
+            <span>
+                @if (AuditInfo is { RowVersionCount: > 0, UpdatedBy: not null })
+                {
+                    @AuditInfo.UpdatedBy
+                }
+            </span>
+
+            <label>Updated Date</label>
+            <span>
+                @if (AuditInfo is { RowVersionCount: > 0, UpdatedUtcDateTime: not null })
+                {
+                    @AuditInfo.UpdatedUtcDateTime.InTimeZone(LoggedInUserService.LocalTimeZoneInfo).FormatDateTime()
+                }
+            </span>
+
+            @* <label>Now UTC</label> *@
+            @* <span> *@
+            @*     @DateTime.UtcNow.FormatDateTime() *@
+            @* </span> *@
+            @* *@
+            @* <label>Now Pacific</label> *@
+            @* <span> *@
+            @*     @DateTime.UtcNow.InTimeZone(LoggedInUserService.LocalTimeZoneInfo).FormatDateTime() *@
+            @* </span> *@
+            @* *@
+            @* <label>Today Pacific</label> *@
+            @* <span> *@
+            @*     @DateTime.UtcNow.InTimeZone(LoggedInUserService.LocalTimeZoneInfo).DateOnly().FormatDate() *@
+            @* </span> *@
+            
+            @* <label>Time Zone</label> *@
+            @* <span> *@
+            @*     @LoggedInUserService.LocalTimeZoneName *@
+            @* </span> *@
+        </two-column-grid>
+    </modal-body>
+
+    <modal-footer>
+        <button @onclick="ModalInstance.CloseAsync">Close</button>
+    </modal-footer>
+</modal-content>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+    [Parameter] public TRecord Record { get; set; } = default!;
+
+    private AuditInfoModel AuditInfo { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuditInfo.RowVersionCount = (int?)Record?.GetType().GetProperty("RowVersionCount")?.GetValue(Record, null);
+        AuditInfo.CreatedBy = (string?)Record?.GetType().GetProperty("CreatedBy")?.GetValue(Record, null);
+        AuditInfo.UpdatedBy = (string?)Record?.GetType().GetProperty("UpdatedBy")?.GetValue(Record, null);
+        AuditInfo.CreatedUtcDateTime = (DateTime?)Record?.GetType().GetProperty("CreatedUtcDateTime")?.GetValue(Record, null);
+        AuditInfo.UpdatedUtcDateTime = (DateTime?)Record?.GetType().GetProperty("UpdatedUtcDateTime")?.GetValue(Record, null);
+
+        await base.OnInitializedAsync();
+    }
+
+    public class AuditInfoModel
+    {
+        public int? RowVersionCount { get; set; }
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
+        public DateTime? CreatedUtcDateTime { get; set; }
+        public DateTime? UpdatedUtcDateTime { get; set; }
+    }
+}

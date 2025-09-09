@@ -1,117 +1,47 @@
-﻿@* @page "/todo/search" *@
-@* @implements IDisposable *@
-@* @inject TodoSearchSimpleService TodoSearchSimpleService *@
-@* @inject TodoSearchAdvancedService TodoSearchAdvancedService *@
-@* @inject LoggedInUserService LoggedInUserService *@
-@* *@
-@* <AmpPageTitle Title="Case Search"/> *@
-@* *@
-@* <search-page> *@
-@* *@
-@*     $1$ @if (LoggedInUserService.IsCaseSearchSimple) #1# *@
-@*     $1$ { #1# *@
-@*     $1$ <EditForm Model="TodoSearchSimpleService.Criteria" OnValidSubmit="TodoSearchSimpleService.LoadRowsAsync"> #1# *@
-@*     $1$     <grid-criteria> #1# *@
-@*     $1$         <AmpInputText @bind-Value="TodoSearchSimpleService.Criteria.Text" SetFocus=@true placeholder="LastName, FirstName" class="right-side-squared"/> #1# *@
-@*     $1$         <button type="submit" class="left-side-squared">Search</button> #1# *@
-@*     $1$ #1# *@
-@*     $1$         <AmpLink Text="Advanced Search >>" #1# *@
-@*     $1$                  OnClick="@(() => LoggedInUserService.IsCaseSearchSimple = !LoggedInUserService.IsCaseSearchSimple)" #1# *@
-@*     $1$                  class="advanced-search"/> #1# *@
-@*     $1$     </grid-criteria> #1# *@
-@*     $1$ </EditForm> #1# *@
-@*     $1$ } #1# *@
-@*     $1$ else #1# *@
-@*     $1$ { #1# *@
-@*     $1$ <EditForm Model="TodoSearchAdvancedService.Criteria" OnValidSubmit="TodoSearchAdvancedService.LoadRowsAsync"> #1# *@
-@*     $1$     <grid-criteria class="multiple-rows"> #1# *@
-@*     $1$         <two-column-grid> #1# *@
-@*     $1$             <AmpInputText @bind-Value="TodoSearchAdvancedService.Criteria.Title" #1# *@
-@*     $1$                           Label="Title" #1# *@
-@*     $1$                           SetFocus=@true/> #1# *@
-@*     $1$             <AmpInputText @bind-Value="TodoSearchAdvancedService.Criteria.Description" #1# *@
-@*     $1$                           Label="Description"/> #1# *@
-@*     $1$             <div></div> #1# *@
-@*     $1$             <div> #1# *@
-@*     $1$                 <AmpInputSelect @bind-Value="@TodoSearchAdvancedService.Criteria.IsCompleted" #1# *@
-@*     $1$                                 Label="IsCompleted" #1# *@
-@*     $1$                                 For="@(() => TodoSearchAdvancedService.Criteria.IsCompleted)"/> #1# *@
-@*     $1$             </div> #1# *@
-@*     $1$         </two-column-grid> #1# *@
-@*     $1$         <one-column-grid> #1# *@
-@*     $1$             <button type="submit">Search</button> #1# *@
-@*     $1$             <span> #1# *@
-@*     $1$                     <button type="button" #1# *@
-@*     $1$                             @onclick="CurrentService.ClearAllCriteria" #1# *@
-@*     $1$                             class="right-side-squared"> #1# *@
-@*     $1$                         Clear Search #1# *@
-@*     $1$                     </button> #1# *@
-@*     $1$                     <button type="button" #1# *@
-@*     $1$                             @onclick="@(() => _showClearSearchMenu = !_showClearSearchMenu)" #1# *@
-@*     $1$                             @onblur="@(() => _showClearSearchMenu = false)" #1# *@
-@*     $1$                             class="drop-down-appendment"> #1# *@
-@*     $1$                     </button> #1# *@
-@*     $1$                     <dropdown-menu class="@(_showClearSearchMenu ? "set-search-defaults" : "hide")"> #1# *@
-@*     $1$                         <dropdown-menu-item @onmousedown="CurrentService.SetCriteriaToDefault"> #1# *@
-@*     $1$                             Set Defaults #1# *@
-@*     $1$                         </dropdown-menu-item> #1# *@
-@*     $1$                     </dropdown-menu> #1# *@
-@*     $1$                 </span> #1# *@
-@*     $1$ #1# *@
-@*     $1$             <AmpLink Text="Simple Search >>" #1# *@
-@*     $1$                      OnClick="@(() => LoggedInUserService.IsCaseSearchSimple = !LoggedInUserService.IsCaseSearchSimple)" #1# *@
-@*     $1$                      class="center m-t-4"/> #1# *@
-@*     $1$         </one-column-grid> #1# *@
-@*     $1$     </grid-criteria> #1# *@
-@*     $1$ </EditForm> #1# *@
-@*     $1$ } #1# *@
-@* *@
-@* </search-page> *@
-@* *@
-@* *@
-@* @if (CurrentService.Rows is null) *@
-@* { *@
-@*     <p>Loading...</p> *@
-@* } *@
-@* else if (CurrentService.Rows!.Count == 0) *@
-@* { *@
-@*     <p>No todos found.</p> *@
-@* } *@
-@* else *@
-@* { *@
-@*     <ul> *@
-@*         @foreach (var todo in CurrentService.Rows) *@
-@*         { *@
-@*             <li> *@
-@*                 <input type="checkbox" disabled checked="@todo.IsCompleted"/> *@
-@*                 <b>@todo.Title</b> *@
-@*                 @if (!string.IsNullOrWhiteSpace(todo.Description)) *@
-@*                 { *@
-@*                     <span> — @todo.Description</span> *@
-@*                 } *@
-@*             </li> *@
-@*         } *@
-@*     </ul> *@
-@* } *@
-@* *@
-@* *@
-@* @code { *@
-@*     private bool _showClearSearchMenu; *@
-@* *@
-@*     private TodoSearchService CurrentService *@
-@*         => LoggedInUserService.IsCaseSearchSimple *@
-@*             ? TodoSearchSimpleService *@
-@*             : TodoSearchAdvancedService; *@
-@* *@
-@*     protected override async Task OnInitializedAsync() *@
-@*     { *@
-@*         CurrentService.OnChange += (sender, args) => StateHasChanged(); *@
-@*         await CurrentService.LoadRowsAsync(); *@
-@*     } *@
-@* *@
-@*     public void Dispose() *@
-@*     { *@
-@*         CurrentService.OnChange -= (_, _) => StateHasChanged(); *@
-@*     } *@
-@* *@
-@* } *@
+﻿@page "/todo/search"
+@using AmpApp.Shared.Models.Todo
+@using Zamp.Client.Components.Grid
+
+@inject TodoGridDataService DataService
+
+<search-page>
+    <AmpPageTitle Title="To Do Search"/>
+    <AmpGrid DataService="DataService"
+             TGridRowDto="TodoGridRowDto"
+             TGridCriteriaModel="TodoGridCriteriaModel"
+
+             ColumnWidths="repeat(3,auto) 1fr">
+        <HeaderRowFragment>
+            <AmpGridCell Text="Title" OnClick='() => context("Title")'/>
+            <AmpGridCell Text="Description" OnClick='() => context("Description")'/>
+            <AmpGridCell Text="Complete" OnClick='() => context("IsComplete")'/>
+            <AmpGridCell Text="Row Version" OnClick='() => context("RowVersionCount")'/>
+        </HeaderRowFragment>
+        <BodyRowFragment Context="row">
+            <AmpGridCell Text="@row.Title"/>
+            <AmpGridCell Text="@row.Description"/>
+            <AmpGridCell Text="@row.IsComplete.ToString()"/>
+            <AmpGridCell Text="@row.RowVersionCount.ToString()"/>
+        </BodyRowFragment>
+    </AmpGrid>
+
+</search-page>
+
+<h3>Test Console Output</h3>
+<button @onclick="CallZampTest">Call Zamp.Client Console.WriteLine</button>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        DataService.Criteria.GridSorting.SetSort(("Description", false ));
+        await DataService.LoadRowsAsync();
+        await base.OnInitializedAsync();
+    }
+
+    private void CallZampTest()
+    {
+        Console.WriteLine("Start");
+        Zamp.Client.DebugHelper.WriteTestMessage();
+        Console.WriteLine("Finish");
+    }
+}

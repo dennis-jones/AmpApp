@@ -29,7 +29,7 @@ else
     <ul>
         @foreach (var todo in TodoState.Todos)
         {
-            <li>@todo.Title: @todo.Description (@(todo.IsCompleted ? "Done" : "Not Done"))</li>
+            <li>@todo.Title: @todo.Description (@(todo.IsComplete ? "Done" : "Not Done"))</li>
         }
     </ul>
 }

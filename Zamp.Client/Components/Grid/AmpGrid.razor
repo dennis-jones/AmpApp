@@ -1,0 +1,181 @@
+﻿@using Blazored.Modal.Services
+@using Zamp.Client.Services
+@using Zamp.Client.Models
+
+@typeparam TGridCriteriaModel where TGridCriteriaModel : Zamp.Shared.Models.Criteria.GridCriteriaModel, new()
+    @typeparam TGridRowDto where TGridRowDto : GridRowDto, new()
+
+@inject IJSRuntime JsRuntime;
+
+<amp-grid class="@CssClass">
+    <grid-table class="@(DataService.IsLoading ? "is-busy" : "")"
+                style="grid-template-columns: @ColumnWidths">
+        @if (HeaderRowFragment is not null)
+        {
+            <grid-head class="@($"{(ShowToolbar ? "" : "no-toolbar")}")">
+                <grid-row>
+                    @HeaderRowFragment(SortFunc)
+                </grid-row>
+            </grid-head>
+        }
+
+        <grid-body>
+            @foreach (var row in DataService.Rows)
+            {
+                <grid-row class="@row.CssClass @(row.IsSelected ? "selected" : "")"
+                          @onclick="args => OnRowClick(row.Id, args)"
+                          @ondblclick="() => OnRowDoubleClick(row.Id)">
+                    @BodyRowFragment(row)
+                </grid-row>
+            }
+        </grid-body>
+
+        <grid-foot>
+            <grid-row>
+                @if (DataService.HasMoreRowsInTheDatabase)
+                {
+                    <grid-cell>
+                        <button @onclick="LoadMoreRecords">Load more records</button>
+                    </grid-cell>
+                }
+                else
+                {
+                    <grid-cell class="footer-with-no-controls"/>
+                }
+            </grid-row>
+        </grid-foot>
+
+        <AmpBusyIndicator/>
+    </grid-table>
+</amp-grid>
+
+@code {
+    [CascadingParameter] IModalService ModalService { get; set; } = default!;
+    
+    [Parameter] public required TGridCriteriaModel Criteria { get; set; }
+    [Parameter] public required IEnumerable<TGridRowDto> Rows { get; set; }
+    
+    [Parameter] public required GridDataServiceBase<TGridCriteriaModel, TGridRowDto> DataService { get; set; }
+
+    [Parameter] public RenderFragment<Func<string, Task>>? HeaderRowFragment { get; set; }
+    [Parameter] public RenderFragment<TGridRowDto> BodyRowFragment { get; set; } = default!;
+
+    [Parameter] public string CssClass { get; set; } = "";
+    [Parameter] public string ColumnWidths { get; set; } = "repeat(99,auto)";
+    [Parameter] public bool AllowMultiselect { get; set; } = false;
+
+    // Parent can hook into OnSelectedRowChanged to:
+    //   - run StateHasChanged, and optionally,
+    //   - enable/disable Goto, Edit or Delete buttons to reflect the user's permissions on the currently-selected row
+    [Parameter] public EventCallback<TGridRowDto?> OnSelectedRowChanged { get; set; }
+    [Parameter] public EventCallback<Guid> OnDoubleClick { get; set; }
+
+
+    // TOOLBAR BUTTONS
+    [Parameter] public bool ShowToolbar { get; set; } = true;
+
+    private Func<string, Task> SortFunc => Sort;
+
+    private int _indexOfRowClicked = -1;
+
+    private Task Sort(string columnNames)
+    {
+        Console.WriteLine(columnNames);
+        DataService.Criteria.GridSorting.AddSort(columnNames);
+        return PopulateGridAsync();
+    }
+
+    private async Task OnRowClick(Guid id, MouseEventArgs args)
+    {
+        if (AllowMultiselect && (args.CtrlKey || args.ShiftKey))
+        {
+            if (args.CtrlKey)
+            {
+                _indexOfRowClicked = DataService.Rows?.FindIndex(r => r.Id == id) ?? -1;
+                if (_indexOfRowClicked > 0)
+                {
+                    var rowClicked = DataService.Rows![_indexOfRowClicked];
+                    rowClicked.IsSelected = !rowClicked.IsSelected;
+                }
+            }
+            else if (args.ShiftKey)
+            {
+                var index1 = _indexOfRowClicked; // row clicked before the shift-click
+                var index2 = DataService.Rows?.FindIndex(r => r.Id == id) ?? -1;
+                if (index2 < index1)
+                {
+                    index1 = index2;
+                    index2 = _indexOfRowClicked;
+                }
+
+                for (int i = 0; i < DataService.Rows!.Count; i++)
+                {
+                    DataService.Rows[i].IsSelected = (i >= index1 && i <= index2);
+                }
+
+                await JsRuntime.InvokeVoidAsync("deselectAllText");
+            }
+
+            DataService.SelectedRow = DataService.Rows?.Count(r => r.IsSelected) == 1
+                ? DataService.Rows.FirstOrDefault(r => r.IsSelected)
+                : null;
+        }
+        else
+        {
+            _indexOfRowClicked = DataService.Rows?.FindIndex(r => r.Id == id) ?? -1;
+            DataService.Rows?.ForEach(r => r.IsSelected = r.Id == id);
+            DataService.SelectedRow = DataService.Rows?.FirstOrDefault(r => r.IsSelected);
+        }
+
+        await OnSelectedRowChanged.InvokeAsync(DataService.SelectedRow);
+        StateHasChanged();
+    }
+
+    public async Task PopulateGridAsync(Guid? selectedRowId = null)
+    {
+        Console.WriteLine("PopulateGridAsync");
+
+        try
+        {
+            await DataService.LoadRowsAsync();
+            if (selectedRowId is null)
+            {
+                DataService.SelectedRow = null;
+                DataService.Rows?.ForEach(r => r.IsSelected = false);
+            }
+            else
+            {
+                DataService.SelectedRow = DataService.Rows?.FirstOrDefault(r => r.Id == selectedRowId);
+                DataService.Rows?.ForEach(r => r.IsSelected = (r.Id == selectedRowId));
+            }
+
+            StateHasChanged();
+        }
+        // catch (UserFriendlyException ex)
+        // {
+        //     await ModalService.AlertModalAsync(ex.Message);
+        // }
+        catch (Exception ex)
+        {
+            await ModalService.AlertModalAsync(ex.Message);
+        }
+    }
+
+    private async Task OnRowDoubleClick(Guid rowId)
+    {
+        await OnDoubleClick.InvokeAsync(rowId);
+    }
+
+    private async Task LoadMoreRecords()
+    {
+        var lastRow = DataService.Rows?.Last();
+        if (lastRow is not null)
+        {
+            DataService.Rows?.ForEach(r => r.IsSelected = r.Id == lastRow.Id);
+            DataService.SelectedRow = lastRow;
+        }
+
+        await DataService.LoadRowsAsync(false);
+    }
+
+}

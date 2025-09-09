@@ -1,12 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
+using Microsoft.JSInterop;
 using Zamp.Shared.Extensions;
 
 namespace Zamp.Client.Features.LoggedInUser;
 
-public class LoggedInUserServiceBase(AuthenticationStateProvider authProvider) : IScopedInjectable
+public class LoggedInUserServiceBase(AuthenticationStateProvider authProvider, IJSRuntime jsRuntime) : IScopedInjectable
 {
     public LoggedInUserModel User { get; } = new();
+    public int LocalTimeZoneOffset { get; set; }
+    public string LocalTimeZoneName { get; set; } = "";
+    public TimeZoneInfo LocalTimeZoneInfo { get; set; } = default!;
+
     
     public async Task InitializeAsync()
     {
@@ -26,5 +31,12 @@ public class LoggedInUserServiceBase(AuthenticationStateProvider authProvider) :
         User.IsGuestOrHigher = User.Roles.Contains("Guest"); // server project will assign Guest role if you are Guest or Editor or Supervisor (see program.cs)
         
         User.IsHelpAuthor = User.Roles.Contains("HelpAuthor");
+        
+         
+        LocalTimeZoneOffset = 0 - await jsRuntime.InvokeAsync<int>("getLocalTimeOffset", []);
+        LocalTimeZoneName = await jsRuntime.InvokeAsync<string>("getLocalTimeZoneName", []);
+        LocalTimeZoneInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(LocalTimeZoneName);
+        // 2024-01-10: TimeZoneInfo.FindSystemTimeZoneById(timeZoneName) does not work on Azure; need to use TimeZoneConverter nuget package
+           
     }
 }

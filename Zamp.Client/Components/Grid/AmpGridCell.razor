@@ -1,0 +1,113 @@
+﻿@using Blazored.Modal.Services
+@using Zamp.Client.Extensions
+@using Zamp.Client.Components.Data
+@if (!ShowCell) return;
+
+<grid-cell @attributes="@AdditionalAttributes">
+    @if (ShowCellContents)
+    {
+        @if (NavigateTo is not null)
+        {
+            <a href="@NavigateTo"
+               @attributes="@AdditionalAttributes"
+               title="@(string.IsNullOrEmpty(Title) ? Hint ?? "" : Title)">
+                @(ChildContent) @(Text)
+            </a>
+        }
+        else if (OnClick.HasDelegate)
+        {
+            <a @onclick:preventDefault="@PreventDefault"
+               @onclick:stopPropagation="@StopPropagation"
+               @attributes="@AdditionalAttributes"
+               @onclick="OnClick"
+               title="@(string.IsNullOrEmpty(Title) ? Hint ?? "" : Title)">
+                @(ChildContent) @(Text)
+            </a>
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(Title))
+            {
+                @if (Text?.Length > (MaxCharacters ?? 999999))
+                {
+                    @(Text[..(MaxCharacters ?? 999999)])<span></span>
+                    <AmpLink Text="(more)" OnClick="ShowMoreModal"/>
+                    @(ChildContent)
+                }
+                else
+                {
+                    @(Text)@(ChildContent)
+                }
+            }
+            else
+            {
+                <span title="@(Title ?? "")">
+                    @if (Text?.Length > (MaxCharacters ?? 999999))
+                    {
+                        @(Text[..(MaxCharacters ?? 999999)])<span></span>
+                        <AmpLink Text="(more)" OnClick="ShowMoreModal"/>
+                        @(ChildContent)
+                    }
+                    else
+                    {
+                        @(Text)@(ChildContent)
+                    }
+                </span>
+            }
+        }
+
+        @if (Hint is not null)
+        {
+            <grid-cell-hint title="@Hint">
+                *
+            </grid-cell-hint>
+        }
+    }
+</grid-cell>
+
+
+@code {
+    [CascadingParameter] protected IModalService ModalService { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = new();
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public string? ColumnName { get; set; }
+    [Parameter] public string? Text { get; set; }
+
+    [Parameter] public string? Hint { get; set; }
+
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    [Parameter] public bool PreventDefault { get; set; } = true;
+
+    [Parameter] public bool StopPropagation { get; set; } = true;
+
+    [Parameter] public string? Title { get; set; } = string.Empty;
+
+    [Parameter] public string? NavigateTo { get; set; }
+
+    [Parameter] public bool ShowCell { get; set; } = true;
+
+    [Parameter] public bool ShowCellContents { get; set; } = true;
+
+    [Parameter] public int? MaxCharacters { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (MaxCharacters is not null)
+        {
+            AdditionalAttributes.Add("style", "white-space: normal");
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task ShowMoreModal()
+    {
+        await ModalService.MessageModalAsync(Text, ColumnName ?? "More");
+    }
+
+}

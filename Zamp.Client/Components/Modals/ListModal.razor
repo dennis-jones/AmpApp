@@ -1,0 +1,41 @@
+﻿@using Blazored.Modal
+<modal-content>
+	<ModalTitleBar Title="@Title"></ModalTitleBar>
+
+	<modal-body>
+		@if (Heading is not null)
+		{
+			<p>@Heading</p>
+		}
+		@if (UseOrderedList)
+		{
+			<ol>
+				@foreach (var message in MessageList ?? [])
+				{
+					<li>@message</li>
+				}
+			</ol>
+		}
+		else
+		{
+			<ul>
+				@foreach (var message in MessageList ?? [])
+				{
+					<li>@message</li>
+				}
+			</ul>
+		}
+	</modal-body>
+
+	<modal-footer>
+		<button @onclick="ModalInstance.CloseAsync">OK</button>
+	</modal-footer>
+</modal-content>
+
+@code {
+	[CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+	[Parameter] public string Title { get; set; } = "CITAR";
+	[Parameter] public string? Heading { get; set; }
+	[Parameter] public IEnumerable<string>? MessageList { get; set; }
+	[Parameter] public bool UseOrderedList { get; set; } = false;
+}

@@ -5,7 +5,7 @@ namespace AmpApp.Features.Todo;
 
 public class GetByCriteriaService(GetByCriteriaRepository repository, IHttpContextAccessor _) : IScopedInjectable
 {
-    public async Task<(IReadOnlyList<TodoDto> Rows, int TotalCount)> GetAsync(TodoSearchCriteria criteria)
+    public async Task<(IReadOnlyList<TodoDto> Rows, int TotalCount)> GetAsync(TodoGridCriteriaModel criteria)
     {
         // do pre-processing or validation of criteria here
 

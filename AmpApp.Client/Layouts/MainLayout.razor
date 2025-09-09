@@ -2,7 +2,7 @@
 @using AmpApp.Client.Shared
 
 @inherits LayoutComponentBase
-@inject LoggedInUserService UserService
+@inject LoggedInUserService LoggedInUserService
 
 <page-wrapper>
     <page-header></page-header>
@@ -32,7 +32,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await UserService.InitializeAsync();
+        await LoggedInUserService.InitializeAsync();
     }
 
     protected override void OnParametersSet()

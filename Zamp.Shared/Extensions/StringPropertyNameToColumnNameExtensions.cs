@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Zamp.Server.Extensions;
+namespace Zamp.Shared.Extensions;
 
 public static class StringPropertyNameToColumnNameExtensions
 {
@@ -13,7 +13,7 @@ public static class StringPropertyNameToColumnNameExtensions
         {
             "Id" => "id",
             // Add any other exceptions here (NOTE: Id is not an exception but included to show the pattern)
-            _ => propertyName.ToSnakeCase()
+            _ => ToSnakeCase(propertyName)
         };
         return $"\"{s}\""; //safest to add double quotes around column names to eliminate possibility of conflict with reserved words
 

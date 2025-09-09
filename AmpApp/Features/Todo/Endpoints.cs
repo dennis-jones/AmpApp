@@ -52,7 +52,7 @@ public class Endpoints : CarterModule
         // On Client side, creating the Request Body is easier creating a querystring (especially with nested objects)
         app.MapPost("/api/todo/search", async (
             [FromServices] GetByCriteriaService service,
-            [FromBody] TodoSearchCriteria criteria) =>
+            [FromBody] TodoGridCriteriaModel criteria) =>
             {
                 try
                 {
@@ -67,7 +67,7 @@ public class Endpoints : CarterModule
                         statusCode: StatusCodes.Status500InternalServerError,
                         title: "A database error occurred while retrieving the data.");
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // General fallback
                     return Results.Problem(

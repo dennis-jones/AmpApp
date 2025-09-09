@@ -1,0 +1,23 @@
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+<modal-content>
+    <ModalTitleBar Title="@Title"></ModalTitleBar>
+
+    <modal-body>
+        <p>@Message</p>
+    </modal-body>
+
+    <modal-footer>
+        <button @onclick="Close">Yes</button>
+        <button @onclick="Cancel">No</button>
+    </modal-footer>
+</modal-content>
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+
+    async Task Close() => await ModalInstance.CloseAsync(ModalResult.Ok(true));
+    async Task Cancel() => await ModalInstance.CancelAsync();
+
+    [Parameter] public string Title { get; set; } = "Confirm";
+    [Parameter] public string? Message { get; set; }
+}

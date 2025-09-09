@@ -1,0 +1,60 @@
+﻿@typeparam TDataModel where TDataModel : class
+
+@if (ShowCell ?? false)
+{
+    <grid-cell class="pre-wrap" @attributes="@AdditionalAttributes">
+        @if (ShowMainContent)
+        {
+            foreach (var row in Rows)
+            {
+                if (!row.Equals(Rows.FirstOrDefault()))
+                {
+                    @Delimiter
+                }
+                if (MainChildFragment != null)
+                {
+                    @MainChildFragment(row)
+                }
+                else
+                {
+                    @row.ToString()
+                }
+            }
+        }
+        else
+        {
+            if (AlternateChildFragment != null)
+            {
+                @AlternateChildFragment(Rows)
+            }
+            else
+            {
+                @Rows.Count
+            }
+        }
+    </grid-cell>
+}
+
+@code {
+
+    [Parameter]
+    public required bool ShowMainContent { get; set; } = true;
+
+    [Parameter]
+    public required List<TDataModel> Rows { get; set; }
+
+    [Parameter]
+    public string Delimiter { get; set; } = "\n";
+
+    [Parameter]
+    public RenderFragment<TDataModel>? MainChildFragment { get; set; }
+
+    [Parameter]
+    public RenderFragment<List<TDataModel>>? AlternateChildFragment { get; set; }
+
+    [Parameter]
+    public bool? ShowCell { get; set; } = true;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = new();
+}

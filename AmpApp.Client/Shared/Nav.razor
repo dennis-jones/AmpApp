@@ -6,7 +6,8 @@
 <AmpNav AppName="Amp.Case">
     <NavItemsContent>
         <AmpNavItem Href="uc/Case Search" Text="Case Search" Match="NavLinkMatch.All"/>
-        <AmpNavItem Href="todo/search" Text="To Do" Match="NavLinkMatch.All"/>
+        <AmpNavItem Href="create-todo" Text="Create To Do" Match="NavLinkMatch.All"/>
+        <AmpNavItem Href="todo/search" Text="Search To Do" Match="NavLinkMatch.All"/>
 
         @if (LoggedInUserService.User.IsAdmin)
         {

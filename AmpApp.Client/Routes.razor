@@ -1,25 +1,33 @@
 ﻿@using AmpApp.Client.Layouts
+@using Blazored.Modal
 <CascadingAuthenticationState>
-    <Router AppAssembly="typeof(Program).Assembly">
-        <Found Context="routeData">
-            <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)">
-                <NotAuthorized>
-                    <h1>Access Denied</h1>
-                    <p>You do not have permission to view this page.</p>
-                </NotAuthorized>
-                <Authorizing>
-                    <p>Checking permissions...</p>
-                </Authorizing>
-            </AuthorizeRouteView>
-            <FocusOnNavigate RouteData="routeData" Selector="h1" />
-        </Found>
-        @* <NotFound> THIS DOESN'T ACTUALLY WORK; MAYBE NEXT RELEASE OF .NET? *@
-        @*     <LayoutView Layout="typeof(Layout.MainLayout)"> *@
-        @*         <h1>Page not founds</h1> *@
-        @*         <p>The page you requested could not be found.</p> *@
-        @*         <a href="/">Return to Home</a> *@
-        @*     </LayoutView> *@
-        @* </NotFound> *@
-    </Router>
+    <CascadingBlazoredModal DisableBackgroundCancel="true"
+                            HideHeader="true"
+                            OverlayCustomClass="modal-overlay"
+                            AnimationType="ModalAnimationType.None"
+                            Size="ModalSize.Automatic"
+                            Position="ModalPosition.TopCenter">
+        <Router AppAssembly="typeof(Program).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)">
+                    <NotAuthorized>
+                        <h1>Access Denied</h1>
+                        <p>You do not have permission to view this page.</p>
+                    </NotAuthorized>
+                    <Authorizing>
+                        <p>Checking permissions...</p>
+                    </Authorizing>
+                </AuthorizeRouteView>
+                <FocusOnNavigate RouteData="routeData" Selector="h1"/>
+            </Found>
+            @* <NotFound> THIS DOESN'T ACTUALLY WORK; MAYBE NEXT RELEASE OF .NET? *@
+            @*     <LayoutView Layout="typeof(Layout.MainLayout)"> *@
+            @*         <h1>Page not founds</h1> *@
+            @*         <p>The page you requested could not be found.</p> *@
+            @*         <a href="/">Return to Home</a> *@
+            @*     </LayoutView> *@
+            @* </NotFound> *@
+        </Router>
+    </CascadingBlazoredModal>
 </CascadingAuthenticationState>
     
