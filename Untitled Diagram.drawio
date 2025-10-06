@@ -4,44 +4,23 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="iU_hsehDUaXlxSYWORCx-1" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;TodoSearch&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="1">
+        <mxCell id="iU_hsehDUaXlxSYWORCx-1" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;TodoSearch&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="1" vertex="1">
           <mxGeometry x="80" y="280" width="400" height="230" as="geometry" />
         </mxCell>
-        <mxCell id="iU_hsehDUaXlxSYWORCx-2" value="&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;AmpGrid&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font&gt;sdfsdf&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="1">
+        <mxCell id="iU_hsehDUaXlxSYWORCx-2" value="&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;AmpGrid&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font&gt;sdfsdf&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="1" vertex="1">
           <mxGeometry x="120" y="320" width="280" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="iU_hsehDUaXlxSYWORCx-3" value="&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;TodoGridDataService&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="1">
-          <mxGeometry x="210" width="460" height="120" as="geometry" />
+        <mxCell id="iU_hsehDUaXlxSYWORCx-3" value="&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;TodoGridDataService&amp;nbsp;&lt;/b&gt;&lt;/font&gt;&lt;b style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); font-size: 14px;&quot;&gt;&amp;lt;TodoGridCriteriaModel, TodoGridRowDto&amp;gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="1" vertex="1">
+          <mxGeometry x="210" width="560" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="iU_hsehDUaXlxSYWORCx-4" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="iU_hsehDUaXlxSYWORCx-3" target="iU_hsehDUaXlxSYWORCx-1">
+        <mxCell id="iU_hsehDUaXlxSYWORCx-4" value="Inject" style="endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="iU_hsehDUaXlxSYWORCx-3" target="iU_hsehDUaXlxSYWORCx-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="390" y="260" as="sourcePoint" />
             <mxPoint x="380" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="iU_hsehDUaXlxSYWORCx-5" value="Inject" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="iU_hsehDUaXlxSYWORCx-4">
-          <mxGeometry x="0.075" y="1" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="iU_hsehDUaXlxSYWORCx-6" value="&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GridDataServiceBase&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 255), rgb(237, 237, 237));&quot;&gt;Properties&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Criteria&lt;/div&gt;&lt;div&gt;Response&lt;/div&gt;&lt;div&gt;SelectedRow&lt;/div&gt;&lt;div&gt;IsLoading&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 255), rgb(237, 237, 237));&quot;&gt;Public Methods&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;LoadRowsAsync&lt;/div&gt;&lt;/div&gt;&lt;div&gt;OnAfterLoadRowsAsync&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" vertex="1" parent="1">
-          <mxGeometry x="500" y="350" width="280" height="180" as="geometry" />
-        </mxCell>
-        <mxCell id="iU_hsehDUaXlxSYWORCx-7" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="iU_hsehDUaXlxSYWORCx-6" target="iU_hsehDUaXlxSYWORCx-3">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="475" y="240" as="sourcePoint" />
-            <mxPoint x="430" y="400" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="iU_hsehDUaXlxSYWORCx-8" value="Inject" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="iU_hsehDUaXlxSYWORCx-7">
-          <mxGeometry x="0.075" y="1" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="iU_hsehDUaXlxSYWORCx-9" value="Inherits" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="iU_hsehDUaXlxSYWORCx-7">
-          <mxGeometry x="0.0687" y="-2" relative="1" as="geometry">
-            <mxPoint x="-1" as="offset" />
-          </mxGeometry>
+        <mxCell id="iU_hsehDUaXlxSYWORCx-6" value="&lt;div&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;GridDataServiceBase &amp;lt;&lt;font style=&quot;color: light-dark(rgb(128, 128, 128), rgb(237, 237, 237));&quot;&gt;TGridCriteriaModel, TGridRowDto&lt;/font&gt;&amp;gt;&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 255), rgb(237, 237, 237));&quot;&gt;Properties&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Criteria&lt;/div&gt;&lt;div&gt;Response&lt;/div&gt;&lt;div&gt;SelectedRow&lt;/div&gt;&lt;div&gt;IsLoading&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;color: light-dark(rgb(0, 0, 255), rgb(237, 237, 237));&quot;&gt;Public Methods&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;LoadRowsAsync&lt;/div&gt;&lt;/div&gt;&lt;div&gt;OnAfterLoadRowsAsync&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="1" vertex="1">
+          <mxGeometry x="220" y="30" width="460" height="180" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
