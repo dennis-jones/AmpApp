@@ -1,13 +1,60 @@
 ﻿@using Blazored.Modal.Services
 @using Zamp.Client.Services
 @using Zamp.Client.Models
+@using Zamp.Shared.Extensions
+@using Zamp.Shared.Models.Criteria
 
-@typeparam TGridCriteriaModel where TGridCriteriaModel : Zamp.Shared.Models.Criteria.GridCriteriaModel, new()
-    @typeparam TGridRowDto where TGridRowDto : GridRowDto, new()
+@typeparam TGridCriteriaModel where TGridCriteriaModel : GridCriteriaModel, new()
+@typeparam TGridRowDto where TGridRowDto : GridRowDto, new()
 
 @inject IJSRuntime JsRuntime;
 
 <amp-grid class="@CssClass">
+    @if (ShowToolbar)
+    {
+        <grid-toolbar>
+            @if (OnGotoButtonClicked.HasDelegate)
+            {
+                <AmpLink OnClick=@(() => { if (!DisableGotoButton && DataService.GetSelectedRow() != null) OnGotoButtonClicked.InvokeAsync(); })
+                         Tooltip=@(DisableGotoButton || DataService.GetSelectedRow() == null ? _noRecordSelectedMessage : GotoButtonTooltip)
+                         class=@(DisableGotoButton || DataService.GetSelectedRow() == null ? "disabled" : string.Empty)>
+                    <span class="material-symbols-outlined">arrow_forward</span><span>@GotoButtonText</span>
+                </AmpLink>
+            }
+            @if (OnAddNewButtonClicked.HasDelegate)
+            {
+                <AmpLink OnClick=@(() => { if (!DisableAddNewButton) OnAddNewButtonClicked.InvokeAsync(); })
+                         Tooltip=@(DisableAddNewButton ? _noRecordSelectedMessage : AddNewButtonTooltip)
+                         class=@(DisableAddNewButton ? "disabled" : string.Empty)>
+                    <span class="material-symbols-outlined">add</span><span>@AddNewButtonText</span>
+                </AmpLink>
+            }
+            @if (OnEditButtonClicked.HasDelegate)
+            {
+                <AmpLink OnClick=@(() => { if (!DisableEditButton && DataService.GetSelectedRow() != null) OnEditButtonClicked.InvokeAsync(); })
+                         Tooltip=@(DisableEditButton || DataService.GetSelectedRow() == null ? _noRecordSelectedMessage : EditButtonTooltip)
+                         class=@(DisableEditButton || DataService.GetSelectedRow() == null ? "disabled" : string.Empty)>
+                    <span class="material-symbols-outlined">edit</span><span>@EditButtonText</span>
+                </AmpLink>
+            }
+            @if (OnDeleteButtonClicked.HasDelegate)
+            {
+                <AmpLink OnClick=@(() => { if (!DisableDeleteButton && DataService.GetSelectedRow() != null) OnDeleteButtonClicked.InvokeAsync(); })
+                         Tooltip=@(DisableDeleteButton || DataService.GetSelectedRow() == null ? _noRecordSelectedMessage : DeleteButtonTooltip)
+                         class=@(DisableDeleteButton || DataService.GetSelectedRow() == null ? "disabled" : string.Empty)>
+                    <span class="material-symbols-outlined">delete</span><span>@DeleteButtonText</span>
+                </AmpLink>
+            }
+
+            @if (ShowDisablePaginationCheckbox)
+            {
+                <AmpCheckbox Label="Disable Pagination"
+                             @bind-Value=@DataService.Criteria.DisablePagination
+                             OnValueChanged=@PopulateGridAsync/>
+            }
+
+        </grid-toolbar>
+    }
     <grid-table class="@(DataService.IsLoading ? "is-busy" : "")"
                 style="grid-template-columns: @ColumnWidths">
         @if (HeaderRowFragment is not null)
@@ -32,10 +79,10 @@
 
         <grid-foot>
             <grid-row>
-                @if (DataService.HasMoreRowsInTheDatabase)
+                @if (DataService.HasMoreRowsInDatabase)
                 {
                     <grid-cell>
-                        <button @onclick="LoadMoreRecords">Load more records</button>
+                        <button @onclick="() => DataService.LoadRowsAsync(false)">Load more records</button>
                     </grid-cell>
                 }
                 else
@@ -51,11 +98,39 @@
 
 @code {
     [CascadingParameter] IModalService ModalService { get; set; } = default!;
-    
+
     [Parameter] public required TGridCriteriaModel Criteria { get; set; }
     [Parameter] public required IEnumerable<TGridRowDto> Rows { get; set; }
-    
     [Parameter] public required GridDataServiceBase<TGridCriteriaModel, TGridRowDto> DataService { get; set; }
+
+    #region TOOLBAR PARAMETERS
+
+    // TOOLBAR PARAMETERS
+    [Parameter] public bool ShowToolbar { get; set; } = true;
+
+    [Parameter] public EventCallback OnGotoButtonClicked { get; set; }
+    [Parameter] public bool DisableGotoButton { get; set; }
+    [Parameter] public string GotoButtonText { get; set; } = "Goto Record";
+    [Parameter] public string GotoButtonTooltip { get; set; } = "Goto the selected record";
+
+    [Parameter] public EventCallback OnAddNewButtonClicked { get; set; }
+    [Parameter] public bool DisableAddNewButton { get; set; }
+    [Parameter] public string AddNewButtonText { get; set; } = "Add New";
+    [Parameter] public string AddNewButtonTooltip { get; set; } = "Create a new record";
+
+    [Parameter] public EventCallback OnEditButtonClicked { get; set; }
+    [Parameter] public bool DisableEditButton { get; set; }
+    [Parameter] public string EditButtonText { get; set; } = "Edit";
+    [Parameter] public string EditButtonTooltip { get; set; } = "Edit the selected record";
+
+    [Parameter] public EventCallback OnDeleteButtonClicked { get; set; }
+    [Parameter] public bool DisableDeleteButton { get; set; }
+    [Parameter] public string DeleteButtonText { get; set; } = "Delete";
+    [Parameter] public string DeleteButtonTooltip { get; set; } = "Delete the selected record";
+
+    [Parameter] public bool ShowDisablePaginationCheckbox { get; set; }
+
+    #endregion
 
     [Parameter] public RenderFragment<Func<string, Task>>? HeaderRowFragment { get; set; }
     [Parameter] public RenderFragment<TGridRowDto> BodyRowFragment { get; set; } = default!;
@@ -71,12 +146,11 @@
     [Parameter] public EventCallback<Guid> OnDoubleClick { get; set; }
 
 
-    // TOOLBAR BUTTONS
-    [Parameter] public bool ShowToolbar { get; set; } = true;
-
     private Func<string, Task> SortFunc => Sort;
 
     private int _indexOfRowClicked = -1;
+
+    private string _noRecordSelectedMessage = "Unavailable: No record selected";
 
     private Task Sort(string columnNames)
     {
@@ -87,68 +161,52 @@
 
     private async Task OnRowClick(Guid id, MouseEventArgs args)
     {
+        
         if (AllowMultiselect && (args.CtrlKey || args.ShiftKey))
         {
             if (args.CtrlKey)
             {
-                _indexOfRowClicked = DataService.Rows?.FindIndex(r => r.Id == id) ?? -1;
-                if (_indexOfRowClicked > 0)
+                _indexOfRowClicked = DataService.Rows.FindIndex(r => r.Id == id);
+                if (_indexOfRowClicked >= 0)
                 {
-                    var rowClicked = DataService.Rows![_indexOfRowClicked];
+                    var rowClicked = DataService.Rows[_indexOfRowClicked];
                     rowClicked.IsSelected = !rowClicked.IsSelected;
                 }
             }
             else if (args.ShiftKey)
             {
                 var index1 = _indexOfRowClicked; // row clicked before the shift-click
-                var index2 = DataService.Rows?.FindIndex(r => r.Id == id) ?? -1;
+                var index2 = DataService.Rows.FindIndex(r => r.Id == id);
                 if (index2 < index1)
                 {
                     index1 = index2;
                     index2 = _indexOfRowClicked;
                 }
 
-                for (int i = 0; i < DataService.Rows!.Count; i++)
+                for (int i = 0; i < DataService.Rows.Count; i++)
                 {
                     DataService.Rows[i].IsSelected = (i >= index1 && i <= index2);
                 }
 
-                await JsRuntime.InvokeVoidAsync("deselectAllText");
             }
-
-            DataService.SelectedRow = DataService.Rows?.Count(r => r.IsSelected) == 1
-                ? DataService.Rows.FirstOrDefault(r => r.IsSelected)
-                : null;
         }
         else
         {
-            _indexOfRowClicked = DataService.Rows?.FindIndex(r => r.Id == id) ?? -1;
-            DataService.Rows?.ForEach(r => r.IsSelected = r.Id == id);
-            DataService.SelectedRow = DataService.Rows?.FirstOrDefault(r => r.IsSelected);
+            _indexOfRowClicked = DataService.Rows.FindIndex(r => r.Id == id);
+            DataService.Rows.ForEach(r => r.IsSelected = r.Id == id);
         }
+        await JsRuntime.InvokeVoidAsync("deselectAllText");
 
-        await OnSelectedRowChanged.InvokeAsync(DataService.SelectedRow);
+        await OnSelectedRowChanged.InvokeAsync(DataService.GetSelectedRow());
         StateHasChanged();
     }
 
-    public async Task PopulateGridAsync(Guid? selectedRowId = null)
+    public async Task PopulateGridAsync()
     {
         Console.WriteLine("PopulateGridAsync");
-
         try
         {
             await DataService.LoadRowsAsync();
-            if (selectedRowId is null)
-            {
-                DataService.SelectedRow = null;
-                DataService.Rows?.ForEach(r => r.IsSelected = false);
-            }
-            else
-            {
-                DataService.SelectedRow = DataService.Rows?.FirstOrDefault(r => r.Id == selectedRowId);
-                DataService.Rows?.ForEach(r => r.IsSelected = (r.Id == selectedRowId));
-            }
-
             StateHasChanged();
         }
         // catch (UserFriendlyException ex)
@@ -164,18 +222,6 @@
     private async Task OnRowDoubleClick(Guid rowId)
     {
         await OnDoubleClick.InvokeAsync(rowId);
-    }
-
-    private async Task LoadMoreRecords()
-    {
-        var lastRow = DataService.Rows?.Last();
-        if (lastRow is not null)
-        {
-            DataService.Rows?.ForEach(r => r.IsSelected = r.Id == lastRow.Id);
-            DataService.SelectedRow = lastRow;
-        }
-
-        await DataService.LoadRowsAsync(false);
     }
 
 }

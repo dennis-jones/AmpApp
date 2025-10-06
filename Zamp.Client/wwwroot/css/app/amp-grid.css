@@ -120,9 +120,14 @@ amp-grid {
             color: var(--grid-toolbar-text);
             text-align: center;
             /*border: 1px solid var(--grid-toolbar-button-border);*/
-            
+
             & i {
                 margin-right: 5px;
+            }
+
+            & span.material-symbols-outlined {
+                margin-right: 5px;
+                margin-bottom: -4px;
             }
             
             & span {

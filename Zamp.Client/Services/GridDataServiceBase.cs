@@ -7,53 +7,53 @@ namespace Zamp.Client.Services;
 
 public abstract class GridDataServiceBase<TGridCriteriaModel, TGridRowDto>(
     HttpClient httpClient,
-    string url
-) : GridCriteriaModel
+    string endpoint
+)
     where TGridCriteriaModel : GridCriteriaModel
     where TGridRowDto : GridRowDto
 {
+    #region Properties
+
     public TGridCriteriaModel Criteria { get; set; } = default!;
     public List<TGridRowDto> Rows { get; set; } = [];
-    public int? TotalRowCount { get; set; }
-    public TGridRowDto? SelectedRow { get; set; }
+    public int TotalRowCount { get; set; }
+    public bool HasMoreRowsInDatabase { get; set; }
     public bool IsLoading { get; set; }
-    public bool HasMoreRowsInTheDatabase { get; set; }
 
+    #endregion
+    
     public async Task LoadRowsAsync(bool firstPage = true)
     {
         try
         {
             IsLoading = true;
-
-            // When we load page 1, any previously-selected row is forgotten (keep it simple)
-            // When loading subsequent pages, select the last row to make it clear in the UI where the new rows start
-            SelectedRow = firstPage ? default : Rows?.LastOrDefault();
-
-            int offset = firstPage ? 0 : Rows?.Count ?? 0;
-            var result = await httpClient.PostAsJsonAsync(url, Criteria);
-            if (!result.IsSuccessStatusCode)
+            
+            Criteria.Offset = firstPage ? 0 : Rows.Count;
+            var response = await httpClient.PostAsJsonAsync(endpoint, Criteria);
+            if (!response.IsSuccessStatusCode)
             {
                 Rows = [];
                 TotalRowCount = 0;
+                HasMoreRowsInDatabase = false;
                 return;
             }
 
-            var searchResult = await result.Content.ReadFromJsonAsync<GridDto<TGridRowDto>>();
-            TotalRowCount = searchResult?.TotalRowCount ?? 0;
-
-            var rows = searchResult?.Rows ?? [];
-            // if 51 rows are returned (assuming page size = 50) then:
-            //  - remove the last row (so there are 50) and
-            //  - set a flag to indicate that the db has more rows
-            if (PageSize > 0 && rows.Count == PageSize + 1)
+            var content = await response.Content.ReadFromJsonAsync<GridResponseDto<TGridRowDto>>() 
+                               ?? new GridResponseDto<TGridRowDto>();
+            
+            // When loading subsequent pages (not first page), select the last row to make it clear in the UI where the new rows start
+            if (!firstPage && Rows.Count > 0)
             {
-                HasMoreRowsInTheDatabase = true;
-                rows.RemoveAt(rows.Count - 1);
+                foreach (var row in Rows.Where(x => x.IsSelected))
+                    row.IsSelected = false;
+                Rows.Last().IsSelected = true;
             }
-            else
-                HasMoreRowsInTheDatabase = false;
-
-            Rows = firstPage ? rows : Rows?.Concat(rows).ToList();
+            
+            Rows = firstPage 
+                ? content.Rows 
+                : Rows.Concat(content.Rows).DistinctBy(row => row.Id).ToList();
+            TotalRowCount = content.TotalRowCount;
+            HasMoreRowsInDatabase = content.HasMoreRowsInDatabase;
 
             await OnAfterLoadRowsAsync();
         }
@@ -61,6 +61,7 @@ public abstract class GridDataServiceBase<TGridCriteriaModel, TGridRowDto>(
         {
             Rows = [];
             TotalRowCount = 0;
+            HasMoreRowsInDatabase = false;
             throw;
         }
         finally
@@ -72,14 +73,21 @@ public abstract class GridDataServiceBase<TGridCriteriaModel, TGridRowDto>(
 
     protected virtual async Task OnAfterLoadRowsAsync()
     {
-        if (Rows != null && Rows.HasProperty("IsActive"))
+        if (Rows.HasProperty("IsActive"))
         {
-            foreach (var row in Rows.Where(row => !row.GetPropertyValue<bool>("IsActive")))
+            foreach (var row in Rows)
             {
-                row.CssClass = "deemphasize";
+                row.CssClass = row.GetPropertyValue<bool>("IsActive") 
+                    ? "deemphasize" 
+                    : string.Empty;
             }
         }
 
         await Task.Run(() => 42);
     }
+
+    public TGridRowDto? GetSelectedRow() => Rows.FirstOrDefault(r => r.IsSelected);
+    
+    public Guid? GetSelectedRowId() => GetSelectedRow()?.Id;
+
 }

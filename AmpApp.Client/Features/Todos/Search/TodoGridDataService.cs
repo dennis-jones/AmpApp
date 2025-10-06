@@ -9,6 +9,7 @@ public class TodoGridDataService : GridDataServiceBase<TodoGridCriteriaModel, To
     public TodoGridDataService(HttpClient httpClient) : base(httpClient, "/api/todo/search")
     {
         Criteria = new TodoGridCriteriaModel();
+        Criteria.GridSorting.SetSort(("Description", false ));
     }
 }
 

@@ -1,11 +1,12 @@
 ﻿using AmpApp.Shared.Models.Todo;
+using Zamp.Client.Models;
 using Zamp.Shared.Models.Criteria;
 
 namespace AmpApp.Features.Todo;
 
 public class GetByCriteriaRepository(IDbConnectionFactory connectionFactory, ILogger<GetByCriteriaRepository> logger) : IScopedInjectable
 {
-    public async Task<(IReadOnlyList<TodoDto> Rows, int TotalCount)> QueryAsync(
+    public async Task<GridResponseDto<TodoGridRowDto>> QueryAsync(
         TodoGridCriteriaModel criteria,
         CancellationToken cancellationToken = default)
     {
@@ -20,10 +21,19 @@ public class GetByCriteriaRepository(IDbConnectionFactory connectionFactory, ILo
                 .AddEqual(nameof(criteria.IsComplete), criteria.IsComplete)
                 .WithOrderByAndPagination(criteria);
 
+            var response = new GridResponseDto<TodoGridRowDto>();
             using var connection = connectionFactory.Create();
-            var rows = (await connection.QueryAsync<TodoDto>(builder.RowsSql, builder.Parameters)).ToList();
-            var totalCount = await connection.ExecuteScalarAsync<int>(builder.CountSql, builder.Parameters);
-            return (rows, totalCount);
+            response.Rows = (await connection.QueryAsync<TodoGridRowDto>(builder.RowsSql, builder.Parameters)).ToList();
+            if (criteria.PageSize == 0 || criteria.DisablePagination || response.Rows.Count <= criteria.PageSize)
+                response.HasMoreRowsInDatabase = false;
+            else
+            {
+                response.Rows.RemoveAt(response.Rows.Count - 1);
+                response.HasMoreRowsInDatabase = true;
+            }
+
+            response.TotalRowCount = await connection.ExecuteScalarAsync<int>(builder.CountSql, builder.Parameters);
+            return response;
         }
         catch (Exception ex)
         {

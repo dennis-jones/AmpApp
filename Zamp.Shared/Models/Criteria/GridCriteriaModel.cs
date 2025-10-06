@@ -4,8 +4,9 @@ namespace Zamp.Shared.Models.Criteria;
 
 public class GridCriteriaModel
 {
-    public int PageNumber { get; set; } = 1;
-    public int PageSize { get; set; } = 50;
+    public bool DisablePagination { get; set; }
+    public int Offset { get; set; } = 0;
+    public int PageSize { get; set; } = 3;
     public SortBuilder GridSorting { get; set; } = new();
 
 }

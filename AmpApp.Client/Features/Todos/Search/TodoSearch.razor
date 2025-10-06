@@ -2,46 +2,39 @@
 @using AmpApp.Shared.Models.Todo
 @using Zamp.Client.Components.Grid
 
-@inject TodoGridDataService DataService
+@inject TodoGridDataService TodoGridDataService
+@inject NavigationManager NavigationManager
 
 <search-page>
     <AmpPageTitle Title="To Do Search"/>
-    <AmpGrid DataService="DataService"
+    <AmpGrid DataService="TodoGridDataService"
              TGridRowDto="TodoGridRowDto"
              TGridCriteriaModel="TodoGridCriteriaModel"
-
-             ColumnWidths="repeat(3,auto) 1fr">
+             OnGotoButtonClicked='() => NavigationManager.NavigateTo($"uc/DetailPage/{TodoGridDataService.GetSelectedRowId}")'
+             OnAddNewButtonClicked='() => NavigationManager.NavigateTo($"uc/AddNewPage/{TodoGridDataService.GetSelectedRowId}")'
+             OnEditButtonClicked='() => NavigationManager.NavigateTo($"uc/EditPage/{TodoGridDataService.GetSelectedRowId}")'
+             OnDeleteButtonClicked='() => NavigationManager.NavigateTo($"uc/DeletePage/{TodoGridDataService.GetSelectedRowId}")'
+             ShowDisablePaginationCheckbox="true"
+             ColumnWidths="repeat(2,auto) 1fr">
         <HeaderRowFragment>
             <AmpGridCell Text="Title" OnClick='() => context("Title")'/>
             <AmpGridCell Text="Description" OnClick='() => context("Description")'/>
             <AmpGridCell Text="Complete" OnClick='() => context("IsComplete")'/>
-            <AmpGridCell Text="Row Version" OnClick='() => context("RowVersionCount")'/>
         </HeaderRowFragment>
         <BodyRowFragment Context="row">
             <AmpGridCell Text="@row.Title"/>
             <AmpGridCell Text="@row.Description"/>
             <AmpGridCell Text="@row.IsComplete.ToString()"/>
-            <AmpGridCell Text="@row.RowVersionCount.ToString()"/>
         </BodyRowFragment>
     </AmpGrid>
 
 </search-page>
 
-<h3>Test Console Output</h3>
-<button @onclick="CallZampTest">Call Zamp.Client Console.WriteLine</button>
 
 @code {
     protected override async Task OnInitializedAsync()
     {
-        DataService.Criteria.GridSorting.SetSort(("Description", false ));
-        await DataService.LoadRowsAsync();
+        await TodoGridDataService.LoadRowsAsync();
         await base.OnInitializedAsync();
-    }
-
-    private void CallZampTest()
-    {
-        Console.WriteLine("Start");
-        Zamp.Client.DebugHelper.WriteTestMessage();
-        Console.WriteLine("Finish");
     }
 }

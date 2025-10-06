@@ -56,8 +56,8 @@ public class Endpoints : CarterModule
             {
                 try
                 {
-                    var (rows, totalCount) = await service.GetAsync(criteria);
-                    return Results.Ok(new { Rows = rows, TotalCount = totalCount });
+                    var response = await service.GetAsync(criteria);
+                    return Results.Ok(response);
                 }
                 catch (DataAccessException ex)
                 {

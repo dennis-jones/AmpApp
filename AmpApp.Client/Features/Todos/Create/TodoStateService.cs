@@ -15,6 +15,8 @@ public class TodoStateService(HttpClient httpClient) : IScopedInjectable
         //
         // var searchResult = await result.Content.ReadFromJsonAsync<TodoSearchResult>();
         // Todos = searchResult?.Rows ?? [];
+        await Task.Run(() => 42);
+
     }
 
     public async Task<bool> AddTodoAsync(CreateTodoDto dto)

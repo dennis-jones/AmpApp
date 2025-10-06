@@ -39,6 +39,7 @@
     private async Task ToggleMinimizeRestore()
     {
         _isModalMinimized = !_isModalMinimized;
+        await Task.Run(() => 42);
         // if (isModalMinimized)
         //     await JsRuntime.InvokeVoidAsync("collapseModal");
         // else

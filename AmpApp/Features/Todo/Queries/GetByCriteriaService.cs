@@ -1,11 +1,11 @@
 ﻿using AmpApp.Shared.Models.Todo;
-using Zamp.Shared.Models.Criteria;
+using Zamp.Client.Models;
 
 namespace AmpApp.Features.Todo;
 
 public class GetByCriteriaService(GetByCriteriaRepository repository, IHttpContextAccessor _) : IScopedInjectable
 {
-    public async Task<(IReadOnlyList<TodoDto> Rows, int TotalCount)> GetAsync(TodoGridCriteriaModel criteria)
+    public async Task<GridResponseDto<TodoGridRowDto>> GetAsync(TodoGridCriteriaModel criteria)
     {
         // do pre-processing or validation of criteria here
 

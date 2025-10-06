@@ -4,7 +4,7 @@
 {
     <a href="@NavigateTo"
        @attributes="@AdditionalAttributes"
-       title="@(Title ?? "")">
+       title="@(Tooltip ?? "")">
         @(ChildContent) @(Text)
     </a>
 }
@@ -15,7 +15,7 @@ else if (OnClick.HasDelegate)
        @ondblclick:stopPropagation="@StopPropagation"
        @attributes="@AdditionalAttributes"
        @onclick="OnClick"
-       title="@(Title ?? "")">
+       title="@(Tooltip ?? "")">
         @(ChildContent)@(Text)
     </a>
 }
@@ -33,7 +33,7 @@ else
     [Parameter] public EventCallback OnClick { get; set; }
     [Parameter] public string? NavigateTo { get; set; }
     [Parameter] public string? Text { get; set; }
-    [Parameter] public string? Title { get; set; } = string.Empty;
+    [Parameter] public string? Tooltip { get; set; } = string.Empty;
     [Parameter] public bool PreventDefault { get; set; } = true;
     [Parameter] public bool StopPropagation { get; set; } = true;
     [Parameter] public bool Show { get; set; } = true;

@@ -1,0 +1,8 @@
+﻿.material-symbols-outlined {
+    font-variation-settings:
+            'FILL' 0,      /* 0 = outlined, 1 = filled */
+            'wght' 400,    /* 100-700 for weight */
+            'GRAD' 0,      /* -25 to 200 for grade */
+            'opsz' 24;     /* 20, 24, 40, 48 for optical size */
+    font-size: 18px; /* Or any size you like */
+}

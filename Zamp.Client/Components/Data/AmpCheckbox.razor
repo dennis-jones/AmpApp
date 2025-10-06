@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Zamp.Shared.Extensions
+<InputCheckbox Id="@TagId"
+               @ref="@_editableControl" 
+               Value="@Value"
+               ValueExpression="@(() => Value)"
+               ValueChanged="@((bool value) => HandleValueChanged(value))"
+               @attributes="@_controlAdditionalAttributes"/>
+@if (Label is not null)
+{
+    <label for="@TagId" @attributes="@_labelAdditionalAttributes">@Label</label>
+}
+
+@code {
+    [Parameter] public string? TagId { get; set; }
+    [Parameter] public bool SetFocus { get; set; } = false;
+    [Parameter] public string? TopMargin { get; set; } = null;
+    [Parameter] public string? Label { get; set; }
+
+    [Parameter] public bool Value { get; set; } = default!;
+    [Parameter] public EventCallback<bool> ValueChanged { get; set; } // DO NOT USE FROM THE CALLING COMPONENT -- used to facilitate 2-way binding
+    [Parameter] public EventCallback<bool> OnValueChanged { get; set; } // can be used by the calling component
+
+    private readonly Dictionary<string, object> _labelAdditionalAttributes = new();
+    private readonly Dictionary<string, object> _controlAdditionalAttributes = new();
+
+    private InputCheckbox? _editableControl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        TagId ??= Guid.NewGuid().ToString();
+
+        if (TopMargin is not null)
+        {
+            var topMarginStyle = $"margin-top: {TopMargin}";
+            _labelAdditionalAttributes.AddCssStyle(topMarginStyle);
+            _controlAdditionalAttributes.AddCssStyle(topMarginStyle);
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+            if (SetFocus && _editableControl?.Element != null)
+                await _editableControl.Element.Value.FocusAsync();
+    }
+
+    private Task HandleValueChanged(bool value)
+    {
+        if (EqualityComparer<bool>.Default.Equals(value, Value)) return Task.CompletedTask;
+        Value = value;
+        ValueChanged.InvokeAsync(Value);
+        OnValueChanged.InvokeAsync(Value); // can be used by the calling component
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+}

@@ -104,10 +104,11 @@ public class SqlBuilder
     public SqlBuilder Paginate(GridCriteriaModel criteria)
     {
         // Postgres-style pagination; adjust as needed for your DB
-        var offset = (criteria.PageNumber - 1) * criteria.PageSize;
+        if (criteria.PageSize <= 0 || criteria.DisablePagination) return this;
+        
         _pagination = "OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
-        _parameters["Offset"] = offset;
-        _parameters["PageSize"] = criteria.PageSize;
+        _parameters["Offset"] = criteria.Offset;
+        _parameters["PageSize"] = criteria.PageSize + 1; // always try to grab an extra row (which will be truncated) so we know if there are more rows
         return this;
     }
     
