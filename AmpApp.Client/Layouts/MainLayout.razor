@@ -3,6 +3,7 @@
 
 @inherits LayoutComponentBase
 @inject LoggedInUserService LoggedInUserService
+@inject NavigationManager NavigationManager
 
 <page-wrapper>
     <page-header></page-header>
@@ -32,6 +33,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (NavigationManager.Uri == NavigationManager.BaseUri)
+        {
+            NavigationManager.NavigateTo("todo/search");
+        }
+
         await LoggedInUserService.InitializeAsync();
     }
 

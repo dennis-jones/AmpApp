@@ -79,7 +79,7 @@
   --grid-body-bg-hover: hsl(var(--sec-h), var(--sec-s), 85%);
   --grid-body-bg-selected: hsl(var(--selected-h), var(--selected-s), var(--selected-l));
   --grid-footer-text: var(--text);
-  --grid-footer-bg: hsl(var(--sec-h), var(--sec-s), 85%);
+  --grid-footer-bg: hsl(var(--sec-h), var(--sec-s), 65%);
   --tab-bg: hsl(var(--sec-h), var(--sec-s), 92%);
   --tab-bg-hover: hsl(var(--sec-h), var(--sec-s), 85%);
   --tab-bg-selected: var(--page-bg);

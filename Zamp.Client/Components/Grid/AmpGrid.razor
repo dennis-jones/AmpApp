@@ -5,7 +5,7 @@
 @using Zamp.Shared.Models.Criteria
 
 @typeparam TGridCriteriaModel where TGridCriteriaModel : GridCriteriaModel, new()
-@typeparam TGridRowDto where TGridRowDto : GridRowDto, new()
+    @typeparam TGridRowDto where TGridRowDto : GridRowDto, new()
 
 @inject IJSRuntime JsRuntime;
 
@@ -53,6 +53,16 @@
                              OnValueChanged=@PopulateGridAsync/>
             }
 
+            <span style="margin-left: auto">&nbsp;</span>
+
+            @if (DataService.Rows.Count > 0)
+            {
+                <span class="m-r-20 m-l-20 nowrap">@($"Rows: {DataService.Rows.Count}{(DataService.Rows.Count < DataService.TotalRowCount ? $" of {DataService.TotalRowCount}" : "")}")</span>
+            }
+            
+            <AmpLink OnClick='() => PopulateGridAsync()' Title="Refresh the list">
+                <span class="material-symbols-outlined">refresh</span><span>Refresh</span>
+            </AmpLink>
         </grid-toolbar>
     }
     <grid-table class="@(DataService.IsLoading ? "is-busy" : "")"
@@ -161,7 +171,6 @@
 
     private async Task OnRowClick(Guid id, MouseEventArgs args)
     {
-        
         if (AllowMultiselect && (args.CtrlKey || args.ShiftKey))
         {
             if (args.CtrlKey)
@@ -187,7 +196,6 @@
                 {
                     DataService.Rows[i].IsSelected = (i >= index1 && i <= index2);
                 }
-
             }
         }
         else
@@ -195,6 +203,7 @@
             _indexOfRowClicked = DataService.Rows.FindIndex(r => r.Id == id);
             DataService.Rows.ForEach(r => r.IsSelected = r.Id == id);
         }
+
         await JsRuntime.InvokeVoidAsync("deselectAllText");
 
         await OnSelectedRowChanged.InvokeAsync(DataService.GetSelectedRow());
