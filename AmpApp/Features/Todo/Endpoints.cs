@@ -1,7 +1,6 @@
 ﻿using AmpApp.Shared.Models.Todo;
 using Microsoft.AspNetCore.Mvc;
 using Zamp.Server.Infrastructure.Middleware;
-using Zamp.Shared.Models.Criteria;
 
 namespace AmpApp.Features.Todo;
 
@@ -9,15 +8,15 @@ public class Endpoints : CarterModule
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/todo", async (CreateService service, CreateTodoDto dto, HttpContext http) =>
+        app.MapPost("/api/todo", async (CreateService service, TodoEntity row, HttpContext http) =>
             {
-                var result = await service.HandleAsync(dto);
+                var result = await service.HandleAsync(row);
                 var location = $"/api/todo/{result.Id}";
                 http.Response.Headers.Location = location;
                 return Results.Created(location, result);
             })
             .RequireAuthorization(AppPolicies.EditorOrHigher)
-            .AddEndpointFilter<ValidationFilter<CreateTodoDto>>();
+            .AddEndpointFilter<ValidationFilter<TodoEntity>>();
 
         app.MapPut("/api/todo/{id:guid}", async (Guid id, TodoDto dto, UpdateService service) =>
             {

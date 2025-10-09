@@ -1,10 +1,4 @@
-﻿@using Blazored.Modal.Services
-@using Zamp.Client.Services
-@using Zamp.Client.Models
-@using Zamp.Shared.Extensions
-@using Zamp.Shared.Models.Criteria
-
-@typeparam TGridCriteriaModel where TGridCriteriaModel : GridCriteriaModel, new()
+﻿@typeparam TGridCriteriaModel where TGridCriteriaModel : GridCriteriaModel, new()
     @typeparam TGridRowDto where TGridRowDto : GridRowDto, new()
 
 @inject IJSRuntime JsRuntime;
@@ -48,9 +42,10 @@
 
             @if (ShowDisablePaginationCheckbox)
             {
-                <AmpCheckbox Label="Disable Pagination"
-                             @bind-Value=@DataService.Criteria.DisablePagination
-                             OnValueChanged=@PopulateGridAsync/>
+                <AmpInputCheckbox Label="Disable Pagination"
+                                  @bind-Value=@DataService.Criteria.DisablePagination
+                                  OnValueChanged=@PopulateGridAsync
+                                  UsePointerCursor="@true"/>
             }
 
             <span style="margin-left: auto">&nbsp;</span>
@@ -59,7 +54,7 @@
             {
                 <span class="m-r-20 m-l-20 nowrap">@($"Rows: {DataService.Rows.Count}{(DataService.Rows.Count < DataService.TotalRowCount ? $" of {DataService.TotalRowCount}" : "")}")</span>
             }
-            
+
             <AmpLink OnClick='() => PopulateGridAsync()' Title="Refresh the list">
                 <span class="material-symbols-outlined">refresh</span><span>Refresh</span>
             </AmpLink>
@@ -155,7 +150,6 @@
     [Parameter] public EventCallback<TGridRowDto?> OnSelectedRowChanged { get; set; }
     [Parameter] public EventCallback<Guid> OnDoubleClick { get; set; }
 
-
     private Func<string, Task> SortFunc => Sort;
 
     private int _indexOfRowClicked = -1;
@@ -171,6 +165,7 @@
 
     private async Task OnRowClick(Guid id, MouseEventArgs args)
     {
+        Console.WriteLine($"Row Clicked: {id}");
         if (AllowMultiselect && (args.CtrlKey || args.ShiftKey))
         {
             if (args.CtrlKey)
@@ -184,14 +179,9 @@
             }
             else if (args.ShiftKey)
             {
-                var index1 = _indexOfRowClicked; // row clicked before the shift-click
-                var index2 = DataService.Rows.FindIndex(r => r.Id == id);
-                if (index2 < index1)
-                {
-                    index1 = index2;
-                    index2 = _indexOfRowClicked;
-                }
-
+                //  NOTE: shift-click does not update _indexOfRowClicked (row clicked before the shift-click)
+                var index1 = Math.Min(_indexOfRowClicked, DataService.Rows.FindIndex(r => r.Id == id));
+                var index2 = Math.Max(_indexOfRowClicked, DataService.Rows.FindIndex(r => r.Id == id));
                 for (int i = 0; i < DataService.Rows.Count; i++)
                 {
                     DataService.Rows[i].IsSelected = (i >= index1 && i <= index2);
@@ -228,9 +218,10 @@
         }
     }
 
-    private async Task OnRowDoubleClick(Guid rowId)
+    private async Task OnRowDoubleClick(Guid id)
     {
-        await OnDoubleClick.InvokeAsync(rowId);
+        Console.WriteLine($"Row Double-clicked: {id}");
+        await OnDoubleClick.InvokeAsync(id);
     }
 
 }

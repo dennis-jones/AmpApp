@@ -1,46 +1,65 @@
 ﻿@page "/claims"
 @attribute [Authorize]
 
-@using Microsoft.AspNetCore.Components.Authorization
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@* @inject AuthenticationStateProvider AuthenticationStateProvider *@
+@inject LoggedInUserService LoggedInUserService
 
-<h3>User Claims</h3>
-
-@if (_userName is null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <p>Hello, @_userName</p>
-    <ul>
-        @foreach (var claim in _userClaims)
-        {
-            <li>@claim.Type: @claim.Value</li>
-        }
-    </ul>
-}
-
-@code {
-    private string? _userName;
-    private IEnumerable<System.Security.Claims.Claim> _userClaims 
-        = Enumerable.Empty<System.Security.Claims.Claim>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Get the current authentication state
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity is not null && user.Identity.IsAuthenticated)
-        {
-            _userName = user.Identity.Name;
-            _userClaims = user.Claims;
-        }
-        else
-        {
-            _userName = null;
-            _userClaims = Enumerable.Empty<System.Security.Claims.Claim>();
-        }
+<style>
+    ul {
+        margin: 14px 0 0 0; 
     }
-}
+    ul > li {
+        margin-left: 40px;
+    }
+</style>
+
+<h3>LoggedInUserService</h3>
+<p>Name: @LoggedInUserService.User.Name</p>
+<p>Email: @LoggedInUserService.User.Email</p>
+<p>Roles: </p>
+<ul>
+    @foreach (var role in LoggedInUserService.User.Roles)
+    {
+        <li>@role</li>
+    }
+    <li>IsAuthenticated: @LoggedInUserService.User.IsAuthenticated</li>
+    <li>IsAdmin: @LoggedInUserService.User.IsAdmin</li>
+    <li>IsSupervisor: @LoggedInUserService.User.IsSupervisor</li>
+    <li>IsEditorOrHigher: @LoggedInUserService.User.IsEditorOrHigher</li>
+    <li>IsGuestOrHigher: @LoggedInUserService.User.IsGuestOrHigher</li>
+    <li>IsHelpAuthor: @LoggedInUserService.User.IsHelpAuthor</li>
+</ul>
+
+<p>Claims: </p>
+<ul>
+    @foreach (var claim in LoggedInUserService.User.Claims)
+    {
+    <li>@claim.Type: @claim.Value</li>
+    }
+</ul>
+
+@* @code { *@
+@*     private string? _userName; *@
+@* *@
+@*     private IEnumerable<System.Security.Claims.Claim> _userClaims *@
+@*         = Enumerable.Empty<System.Security.Claims.Claim>(); *@
+@* *@
+@*     protected override async Task OnInitializedAsync() *@
+@*     { *@
+@*         // Get the current authentication state *@
+@*         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync(); *@
+@*         var user = authState.User; *@
+@* *@
+@*         if (user.Identity is not null && user.Identity.IsAuthenticated) *@
+@*         { *@
+@*             _userName = user.Identity.Name; *@
+@*             _userClaims = user.Claims; *@
+@*         } *@
+@*         else *@
+@*         { *@
+@*             _userName = null; *@
+@*             _userClaims = Enumerable.Empty<System.Security.Claims.Claim>(); *@
+@*         } *@
+@*     } *@
+@* *@
+@* } *@

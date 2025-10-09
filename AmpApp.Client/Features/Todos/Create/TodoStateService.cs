@@ -19,11 +19,11 @@ public class TodoStateService(HttpClient httpClient) : IScopedInjectable
 
     }
 
-    public async Task<bool> AddTodoAsync(CreateTodoDto dto)
+    public async Task<bool> AddTodoAsync(TodoEntity row)
     {
-        var response = await httpClient.PostAsJsonAsync("/api/todo", dto);
+        var response = await httpClient.PostAsJsonAsync("/api/todo", row);
         if (!response.IsSuccessStatusCode) return false;
-
+    
         // Optionally, could re-fetch or append new item
         await RefreshTodosAsync();
         return true;

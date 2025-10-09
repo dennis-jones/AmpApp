@@ -5,6 +5,7 @@ public class LoggedInUserModel
     public bool IsAuthenticated { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public IEnumerable<System.Security.Claims.Claim> Claims = Enumerable.Empty<System.Security.Claims.Claim>();
     public List<string> Roles { get; set; } = [];
     public bool IsAdmin { get; set; }
     public bool IsSupervisor { get; set; }

@@ -1,1 +1,2 @@
-﻿global using Zamp.Shared.Models.Criteria;
+﻿global using FluentValidation;
+global using Zamp.Shared.Models;

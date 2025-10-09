@@ -1,11 +1,9 @@
-﻿using Zamp.Shared.Helpers;
-
-namespace Zamp.Shared.Models.Criteria;
+﻿namespace Zamp.Shared.Models;
 
 public class GridCriteriaModel
 {
     public bool DisablePagination { get; set; }
-    public int Offset { get; set; } = 0;
+    public int Offset { get; set; }
     public int PageSize { get; set; } = 3;
     public SortBuilder GridSorting { get; set; } = new();
 

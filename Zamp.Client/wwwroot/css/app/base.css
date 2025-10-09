@@ -34,6 +34,10 @@ body {
     font-weight: bold;
 }
 
+.pointer-cursor {
+    cursor: pointer;
+}
+
 .app-help span {
     background-color: transparent;
     display: flex;

@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Http;
 using Zamp.Shared.Extensions;
-using Zamp.Shared.Models.Criteria;
+using Zamp.Shared.Models;
 
 namespace Zamp.Server.Infrastructure.Data;
 

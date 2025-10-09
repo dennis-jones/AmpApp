@@ -1,4 +1,4 @@
-﻿namespace Zamp.Client.Models;
+﻿namespace Zamp.Shared.Models;
 
 public class GridResponseDto<TGridRowDto>
     where TGridRowDto: GridRowDto

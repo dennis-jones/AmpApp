@@ -1,0 +1,245 @@
+﻿@typeparam TEntity where TEntity : EntityBase, new()
+
+@attribute [Authorize]
+
+@* @inject EditPageAlertBarErrorService EditPageAlertBarErrorService *@
+@* @inject EditPageAlertBarWarningService EditPageAlertBarWarningService *@
+
+@if (EditContext != null)
+{
+    <EditForm EditContext="EditContext"
+              OnSubmit="OnSubmit"
+              
+              autocomplete="off"
+              spellcheck="true"
+              class="@($"{ModalWidthCssClass} modal-content {(_disableButtons ? "is-busy" : "")}")">
+        @* <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="true"/> *@
+
+        <ModalTitleBar Title="@($"{Mode} {EntityName}")" HelpStateNameOverride="@HelpStateNameOverride"/>
+
+        @if (ShowBanner && BannerFragment != null)
+        {
+            <modal-banner>
+                @BannerFragment
+            </modal-banner>
+        }
+
+        @* <EditPageAlertBar EditPageAlertBarService="EditPageAlertBarWarningService" ShowCloseButton="@ShowWarningAlertBarCloseButton"/> *@
+        @* *@
+        @* <EditPageAlertBar EditPageAlertBarService="EditPageAlertBarErrorService" ShowCloseButton="@ShowErrorAlertBarCloseButton"> *@
+        @*     <ChildContent> *@
+        @*         @if (EditPageAlertBarErrorService.ShowValidationSummary) *@
+        @*         { *@
+        @*             <ValidationSummary/> *@
+        @*         } *@
+        @*     </ChildContent> *@
+        @* </EditPageAlertBar> *@
+
+        <modal-edit-body>
+            <fieldset disabled=@(!EnableSave)>
+                <edit-controls style="@((GridTemplateColumns is null ? "" : $"grid-template-columns: {GridTemplateColumns}"))">
+                    @if (ShowIdColumn)
+                    {
+                        <AmpDisplayId Id="DataService.Row.Id"/>
+                    }
+                    @ChildContent(DataService.Row)
+                </edit-controls>
+            </fieldset>
+            <AmpBusyIndicator/>
+        </modal-edit-body>
+
+        <modal-footer>
+            @if (Mode == AmpEditPageModeEnum.Edit)
+            {
+                <a @onclick="() => ModalService.AuditModalAsync(DataService.Row)">Audit Info</a>
+            }
+            @FooterFragment
+            @if (EnableSave)
+            {
+                <button disabled="@(_disableButtons || (DisableSaveIfNotDirty && EditContext.IsModified() == false))"
+                        type="submit">
+                    Save
+                </button>
+            }
+            <button type="button"
+                    disabled="@(_disableButtons)"
+                    @onclick="CloseCancelModal">
+                @(EnableSave ? "Cancel" : "Close")
+            </button>
+        </modal-footer>
+    </EditForm>
+}
+
+@code {
+
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; } = default!;
+    [CascadingParameter] protected IModalService ModalService { get; set; } = default!;
+
+    [Parameter] public required AmpEditPageServiceBase<TEntity> DataService { get; set; }
+    [Parameter] public required string? EntityName { get; set; }
+    [Parameter] public required AmpEditPageModeEnum Mode { get; set; }
+    [Parameter] public required RenderFragment<TEntity?> ChildContent { get; set; }
+    
+    [Parameter] public bool EnableSave { get; set; } = true;
+    
+    [Parameter] public RenderFragment? BannerFragment { get; set; }
+    [Parameter] public RenderFragment? FooterFragment { get; set; }
+    
+    [Parameter] public string? ModalWidthCssClass { get; set; } = "x800";
+
+    [Parameter] public string? GridTemplateColumns { get; set; }
+
+    [Parameter] public Guid Id { get; set; }
+    [Parameter] public bool ShowIdColumn { get; set; } = true;
+    [Parameter] public bool CopyRecord { get; set; } = false;
+
+    [Parameter] public EventCallback OnBeforeSave { get; set; }
+    [Parameter] public EventCallback OnAfterSave { get; set; }
+    [Parameter] public EventCallback OnBeforeModalClosedOrCancelled { get; set; }
+    [Parameter] public EventCallback OnAfterRowLoaded { get; set; }
+    [Parameter] public bool ShowBanner { get; set; } = false;
+    [Parameter] public bool DisableSaveIfNotDirty { get; set; } = false;
+
+    [Parameter] public bool ShowWarningAlertBarCloseButton { get; set; } = false;
+    [Parameter] public bool ShowErrorAlertBarCloseButton { get; set; } = true;
+    [Parameter] public string? HelpStateNameOverride { get; set; }
+
+    // private FluentValidationValidator _fluentValidationValidator = default!;
+    protected EditContext? EditContext { get; set; }
+    private bool _hasBeenSaved = false;
+    private bool _isSaveInProgress = false;
+
+    private bool _disableButtons;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (Mode == AmpEditPageModeEnum.Edit || CopyRecord)
+            {
+                var result = await DataService.GetRowAsync(Id);
+                DataService.Row = result;
+                if (DataService.Row == null)
+                {
+                    throw new Exception("Record not found. Likely another user deleted it.");
+                    // throw new UserFriendlyException("Record not found. Likely another user deleted it.");
+                }
+
+                if (CopyRecord)
+                {
+                    DataService.Row.Id = null;
+                    Mode = AmpEditPageModeEnum.Add;
+                }
+            }
+            else
+            {
+                if (DataService.Row == null)
+                    DataService.Row = new TEntity();
+            }
+
+            await OnAfterRowLoaded.InvokeAsync();
+        }
+        // catch (UserFriendlyException ex)
+        // {
+        //     EnableSave = false;
+        //     EditPageAlertBarErrorService.Show(ex.Message);
+        // }
+        finally
+        {
+            EditContext = new EditContext(DataService.Row);
+            EditContext.Validate();
+            await base.OnInitializedAsync();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender && EditContext is not null)
+        {
+            // EditContext.Validate();
+            // await _fluentValidationValidator.ValidateAsync();
+        }
+    }
+
+    public async Task CloseCancelModal()
+    {
+        await OnBeforeModalClosedOrCancelled.InvokeAsync();
+        await ModalInstance.CancelAsync();
+    }
+
+    protected async Task OnSubmit()
+    {
+        if (await SaveRecord())
+        {
+            await OnBeforeModalClosedOrCancelled.InvokeAsync();
+            await ModalInstance.CloseAsync(ModalResult.Ok(DataService.Row?.Id));
+        }
+    }
+
+    private async Task<bool> SaveRecord()
+    {
+        bool success = false;
+        if (_isSaveInProgress)
+            return false;
+
+        try
+        {
+            _isSaveInProgress = true;
+
+            if (EditContext is null)
+                return false;
+
+            DisableButtonsIfSaveIsLongRunning();
+
+            await OnBeforeSave.InvokeAsync();
+
+            // if (await _fluentValidationValidator.ValidateAsync() == false)
+            //     throw new UserFriendlyException(new ExceptionInfo(AppGlobal.UserFriendlyExceptionType.Validation));
+
+            if (Mode == AmpEditPageModeEnum.Add)
+                DataService.Row.Id = await DataService.InsertAsync();
+            else if (await DataService.UpdateAsync() == 0)
+            {
+                var tempRecord = await DataService.GetRowAsync(Id);
+                // if (tempRecord is null)
+                //     throw new UserFriendlyException(new ExceptionInfo(AppGlobal.UserFriendlyExceptionType.RecordDoesNotExistOnSave));
+                // throw new UserFriendlyException(new ExceptionInfo(AppGlobal.UserFriendlyExceptionType.RecordUpdatedByAnotherUser, tempRecord.UpdatedBy));
+            }
+
+            await OnAfterSave.InvokeAsync();
+            _hasBeenSaved = true;
+            success = true;
+        }
+        // catch (Exception ex)
+        // {
+        //     EditPageAlertBarErrorService.Show(ex);
+        // }
+        finally
+        {
+            _isSaveInProgress = false;
+            _disableButtons = false;
+        }
+
+        return success;
+    }
+
+    private async void DisableButtonsIfSaveIsLongRunning()
+    {
+        await Task.Delay(1000);
+        if (_isSaveInProgress)
+        {
+            _disableButtons = true;
+            StateHasChanged();
+        }
+
+        // ensure no race condition leaves the buttons disabled
+        await Task.Delay(1000);
+        if (!_isSaveInProgress && _disableButtons)
+        {
+            _disableButtons = false;
+            StateHasChanged();
+        }
+    }
+
+}

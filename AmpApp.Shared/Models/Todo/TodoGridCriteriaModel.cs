@@ -1,6 +1,4 @@
-﻿using Zamp.Client.Models;
-
-namespace AmpApp.Shared.Models.Todo;
+﻿namespace AmpApp.Shared.Models.Todo;
 
 public class TodoGridCriteriaModel : GridCriteriaModel
 {

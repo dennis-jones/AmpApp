@@ -1,6 +1,5 @@
 ﻿using AmpApp.Shared.Models.Todo;
-using Zamp.Client.Models;
-using Zamp.Shared.Models.Criteria;
+using Zamp.Shared.Models;
 
 namespace AmpApp.Features.Todo;
 

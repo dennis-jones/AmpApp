@@ -1,48 +1,36 @@
-﻿@using Microsoft.JSInterop
-@inject IJSRuntime JsRuntime
+﻿@inject IJSRuntime JsRuntime
 
 <modal-title class="@(_isModalMinimized ? "collapsed" : "")">
-    <h4>@GetModalTitle()</h4>
+    <h4>@Title</h4>
     <AmpLink OnClick="ToggleMinimizeRestore"
              Title="@(_isModalMinimized ? "Restore" : "Minimize")"
              class="modal-collapse">
         @if (_isModalMinimized)
         {
-            <i class="fa-solid fa-up-long"></i>
+            <span class="material-symbols-outlined">arrow_upward</span>
         }
         else
         {
-            <i class="fa-solid fa-down-long"></i>
+            <span class="material-symbols-outlined">arrow_downward</span>
         }
     </AmpLink>
     <AmpHelpButton Show="@ShowHelp" HelpStateNameOverride="@HelpStateNameOverride"/>
 </modal-title>
 
 @code {
-    [Parameter] public string? TitleBarSuffix { get; set; }
     [Parameter] public string? HelpStateNameOverride { get; set; }
     [Parameter] public bool ShowHelp { get; set; } = true;
-    [Parameter] public int? Id { get; set; }
-
     [Parameter] public string? Title { get; set; }
 
     bool _isModalMinimized = false;
 
-    private string? GetModalTitle()
-    {
-        if (Id is not null && TitleBarSuffix is not null)
-            return Id == 0 ? $"Add {TitleBarSuffix}" : $"Edit {TitleBarSuffix}";
-
-        return Title;
-    }
-
     private async Task ToggleMinimizeRestore()
     {
         _isModalMinimized = !_isModalMinimized;
-        await Task.Run(() => 42);
-        // if (isModalMinimized)
-        //     await JsRuntime.InvokeVoidAsync("collapseModal");
-        // else
-        //     await JsRuntime.InvokeVoidAsync("restoreModal");
+        if (_isModalMinimized)
+            await JsRuntime.InvokeVoidAsync("collapseModal");
+        else
+            await JsRuntime.InvokeVoidAsync("restoreModal");
     }
+
 }

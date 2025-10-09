@@ -34,4 +34,12 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
     </ItemGroup>
 
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Components\Modals\EditPage\EditPage.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
+    </ItemGroup>
+
 </Project>

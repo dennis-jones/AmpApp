@@ -1,0 +1,108 @@
+﻿@inherits AmpInputBase<string>
+
+@if (Label is not null)
+{
+    if (string.IsNullOrWhiteSpace(Label))
+    {
+        <div>&nbsp;</div>
+    }
+    else
+    {
+        <label for="@_tagId" @attributes="@_labelAdditionalAttributes">@Label</label>
+    }
+}
+else if (LabelFragment != null)
+{
+    @LabelFragment(_tagId)
+}
+
+@if (base.For is not null)
+{
+    @if (ValidationMessages.Any())
+    {
+        <AmpTooltip Title=@GetValidationMessages()>
+            <validation-indicator @attributes="@_indicatorAdditionalAttributes">*</validation-indicator>
+        </AmpTooltip>
+    }
+    else
+    {
+        <div @attributes="@_indicatorAdditionalAttributes"></div>
+    }
+}
+<InputText id="@_tagId"
+           Value="@Value"
+           ValueExpression="@For"
+           ValueChanged="@HandleValueChanged"
+           @ref="@_editableControl"
+           @attributes="@AdditionalAttributes"
+           disabled="@(!Enabled)"/>
+
+@code {
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = new();
+
+    [Parameter] public RenderFragment<string>? LabelFragment { get; set; }
+
+    [Parameter] public string? Label { get; set; }
+
+    [Parameter] public bool SetFocus { get; set; } = false;
+    [Parameter] public string? TopMargin { get; set; } = null;
+    [Parameter] public int? ControlWidth { get; set; } = null;
+    [Parameter] public bool Enabled { get; set; } = true;
+
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; } // Do not set this parameter manually. It is used by Blazor for @bind-Value two-way binding. To bind to this control, use @bind-Value, not ValueChanged directly.
+    [Parameter] public EventCallback<string?> OnValueChanged { get; set; }
+
+    private string? _tagId = Guid.NewGuid().ToString();
+    private Dictionary<string, object> _labelAdditionalAttributes = new();
+    private Dictionary<string, object> _indicatorAdditionalAttributes = new();
+
+    private InputText? _editableControl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (TopMargin is not null)
+        {
+            var topMarginStyle = $"margin-top: {TopMargin}";
+            _labelAdditionalAttributes.AddCssStyle(topMarginStyle);
+            _indicatorAdditionalAttributes.AddCssStyle(topMarginStyle);
+            AdditionalAttributes.AddCssStyle(topMarginStyle);
+        }
+
+        if (ControlWidth is not null)
+            AdditionalAttributes.AddCssClass($"w-{ControlWidth}");
+
+        EditContext.Validate();
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender && SetFocus)
+            await FocusAsync();
+    }
+
+    private async Task FocusAsync()
+    {
+        if (_editableControl?.Element != null)
+            await _editableControl.Element.Value.FocusAsync();
+    }
+
+    private async Task HandleValueChanged(string? value)
+    {
+        if (EqualityComparer<string?>.Default.Equals(value, Value))
+            return;
+    
+        Value = value;
+
+        EditContext.Validate();
+
+        await ValueChanged.InvokeAsync(Value);
+        await OnValueChanged.InvokeAsync(Value);
+
+        StateHasChanged();
+    }
+}

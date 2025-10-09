@@ -12,7 +12,7 @@
              TGridCriteriaModel="TodoGridCriteriaModel"
              OnGotoButtonClicked='() => NavigationManager.NavigateTo($"uc/DetailPage/{TodoGridDataService.GetSelectedRowId}")'
              OnAddNewButtonClicked='() => NavigationManager.NavigateTo($"uc/AddNewPage/{TodoGridDataService.GetSelectedRowId}")'
-             OnEditButtonClicked='() => NavigationManager.NavigateTo($"uc/EditPage/{TodoGridDataService.GetSelectedRowId}")'
+             OnEditButtonClicked='() => NavigationManager.NavigateTo($"uc/TodoEdit/{TodoGridDataService.GetSelectedRowId}")'
              OnDeleteButtonClicked='() => NavigationManager.NavigateTo($"uc/DeletePage/{TodoGridDataService.GetSelectedRowId}")'
              ShowDisablePaginationCheckbox="true"
              ColumnWidths="repeat(2,auto) 1fr">

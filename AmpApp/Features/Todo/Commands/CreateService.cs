@@ -4,9 +4,9 @@ namespace AmpApp.Features.Todo;
 
 public class CreateService(CreateRepository repo, IHttpContextAccessor context) : IScopedInjectable
 {
-    public async Task<IdDto> HandleAsync(CreateTodoDto dto)
+    public async Task<IdDto> HandleAsync(TodoEntity row)
     {
-        var entity = dto.Adapt<TodoEntity>();
+        var entity = row.Adapt<TodoEntity>();
         entity.Id = Guid.CreateVersion7();
         var loginUserName = context.HttpContext.GetLoginUserName();
         entity.CreatedBy = loginUserName;

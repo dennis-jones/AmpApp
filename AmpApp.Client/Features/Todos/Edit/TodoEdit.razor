@@ -1,0 +1,28 @@
+﻿@inject TodoAmpEditServiceBase TodoAmpEditServiceBase
+@inject LoggedInUserService LoggedInUserService
+
+<AmpEditPage DataService="TodoAmpEditServiceBase"
+             EntityName="Todo"
+             EnableSave="LoggedInUserService.User.IsEditorOrHigher"
+             Mode="Mode"
+             Id="Id">
+    <AmpInputText @bind-Value="@context!.Title"
+                  Label="Title"
+                  For="@(() => context.Title ?? string.Empty)"/>
+    @* <AmpInputTextArea @bind-Value="@context.Description" *@
+    @*                   Label="Description" *@
+    @*                   For="@(() => context.Description)" *@
+    @*                   SetFocus="true"/> *@
+    @* <AmpInputSelect @bind-Value="@context.IsComplete" *@
+    @*                 Label="Complete" *@
+    @*                 For="@(() => context.IsComplete)"/> *@
+</AmpEditPage>
+
+@code {
+
+    [Parameter]
+    public required Guid Id { get; set; }
+
+    [Parameter]
+    public required AmpEditPageModeEnum Mode { get; set; }
+}

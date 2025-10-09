@@ -1,7 +1,5 @@
 ﻿using System.Net.Http.Json;
-using Zamp.Client.Models;
-using Zamp.Shared.Extensions;
-using Zamp.Shared.Models.Criteria;
+using Zamp.Shared.Models;
 
 namespace Zamp.Client.Services;
 

@@ -1,9 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
-using Zamp.Client.Features.LoggedInUser;
-
-namespace AmpApp.Client.Features;
+﻿namespace AmpApp.Client.Features;
 
 public class LoggedInUserService(AuthenticationStateProvider authProvider, IJSRuntime jsRuntime) 
     : LoggedInUserServiceBase(authProvider, jsRuntime)
